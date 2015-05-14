@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Game{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  

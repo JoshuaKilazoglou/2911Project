@@ -1,71 +1,122 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 
-public class UI extends JFrame {
-	private Game game;
-	private Layer chessPiecePanel;
-	/*
-	 * Precondition:Nothing
-	 * Postcondition:A frame containing new content is inserted to frame
-	 */
-	public UI() {
-		super();
-		creatConetent();
+public class Mouse implements MouseListener {
+	UI ui;
+	Game game;
+	Layer target;
+	JDialog dialog;
+	Color[] color = new Color[2];
+
+	public Mouse(Layer target, Game game,UI ui) {
+		this.target = target;
+		this.game = game;
+		this.ui = ui;
+		this.dialog = new JDialog();
+		color[0] = Color.RED;
+		color[1] = Color.YELLOW;
+		
+		JButton reStart = new JButton("Restart");
+		reStart.setVisible(true);
+		reStart.setPreferredSize(new Dimension(100,62));
+		reStart.addActionListener(new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.restartGame();	
+				ui.creatConetent();
+				dialog.setVisible(false);
+			}
+			
+		});
+		
+		JButton exit = new JButton("exit");
+		exit.setVisible(true);
+		exit.setPreferredSize(new Dimension(100,62));
+		exit.addActionListener(new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);	
+			}
+			
+		});
+		
+		
+		FlowLayout flowLayout = new FlowLayout();
+		flowLayout.setHgap(20);
+		flowLayout.setVgap(30);
+		dialog.setSize(new Dimension(260,160));
+		dialog.setLayout(flowLayout);
+		dialog.setResizable(false);
+		dialog.add(reStart);
+		dialog.setLocation(target.getWidth()/3, target.getHeight()/3);
+		dialog.add(exit);	
 	}
 
-	/**
-	 * Preconditon:Nothing
-	 * Postconditon:Meant to be invoke every time when it needs to restart or start the game 
-	 */
-	public void creatConetent(){
-		game = new Game();
-		chessPiecePanel = new Layer();
-		frameSetup();
-		addingPanel();
-		addingMouseAdapter();
-		setVisible(true);
-	}
-	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int col = 0;
+		int player = game.getCurrentPlayer();
 
-	private void addingPanel() {
-		JLayeredPane layeredPane = getLayeredPane();
-		layeredPane.setVisible(true);
-		layeredPane.setSize(640, 480);
-		
-		JLabel board = new JLabel();
-		board.setBounds(0, 0,640,480);
-		board.setVisible(true);
-		ImageIcon i = new ImageIcon(getClass().getResource("Connect4Board.png"));
-		board.setIcon(i);
-		board.setOpaque(true);
-		
-		layeredPane.add(board, new Integer(10));
-	}
+		double Location = e.getPoint().getX();
+		final double colWidth = 90.0;
+		final double firstColWidth = 92.0;
 
-	private void addingMouseAdapter(){
-		JLayeredPane layeredPane = getLayeredPane();
+		for (Double k = firstColWidth; col < 7; col++) {
+			if (Location < k) {
+				break;
+			}
+			k += colWidth;
+		}
+
+		int top = game.top(col);
+		if (game.checkValidMove(col)) {
+			game.makeMove(col);
+			Graphics g = target.getGraphics();
+			g.setColor(color[player-1]);
+			g.fillOval((int) ((col) * colWidth) + 13, 405 - top * 80, 75, 75);
+			target.paintComponent(g);
+		}
 		
-		chessPiecePanel.setBounds(0, 0,640,480);
-		chessPiecePanel.setVisible(true);
-		chessPiecePanel.setOpaque(false);
-		
-		Mouse mouse = new Mouse(chessPiecePanel,game,this);
-		chessPiecePanel.addMouseListener(mouse);
-		
-		layeredPane.add(chessPiecePanel,new Integer(8));
+		if (game.getState() == 2){
+			dialog.setModal(true);
+			dialog.setVisible(true);
+		}	
 	}
 
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 
-	
-	/**
-	 * This is only called when we get into the whole gaming system
-	 */
-	private void frameSetup() {
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new FlowLayout());
-		pack();
-		setSize(new Dimension(640, 508));
 	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
