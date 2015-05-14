@@ -1,84 +1,71 @@
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.*;
 
-import javax.imageio.ImageIO;
+import javax.swing.*;
 
-public class Mouse implements MouseListener {
-	Container target;
-	Game game;
-	BufferedImage[] image = new BufferedImage[2];
-
-	public Mouse(Container target, Game game) {
-		this.target = target;
-		this.game = game;
-		try {
-			image[0] = ImageIO.read(getClass().getResource("1.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			image[1] = ImageIO.read(getClass().getResource("2.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+public class UI extends JFrame {
+	private Game game;
+	private Layer chessPiecePanel;
+	/*
+	 * Precondition:Nothing
+	 * Postcondition:A frame containing new content is inserted to frame
+	 */
+	public UI() {
+		super();
+		creatConetent();
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int col = 0;
-		int player = game.getCurrentPlayer();
+	/**
+	 * Preconditon:Nothing
+	 * Postconditon:Meant to be invoke every time when it needs to restart or start the game 
+	 */
+	public void creatConetent(){
+		game = new Game();
+		chessPiecePanel = new Layer();
+		frameSetup();
+		addingPanel();
+		addingMouseAdapter();
+		setVisible(true);
+	}
+	
 
-		double Location = e.getPoint().getX();
-		final double colWidth = 90.0;
-		final double firstColWidth = 92.0;
-
-		for (Double k = firstColWidth; col < 7; col++) {
-			if (Location < k) {
-				break;
-			}
-			k += colWidth;
-		}
+	private void addingPanel() {
+		JLayeredPane layeredPane = getLayeredPane();
+		layeredPane.setVisible(true);
+		layeredPane.setSize(640, 480);
 		
-		System.out.println(col);
-		int top = game.top(col);
-		if (game.checkValidMove(col)) {
-			game.makeMove(col);
-			Graphics g = target.getGraphics();
-			g.drawImage(image[player - 1], (int) ((col) * colWidth)+13,
-					406 - top * 80 , 75, 75, null);
-			target.paint(g);
-		}
-
+		JLabel board = new JLabel();
+		board.setBounds(0, 0,640,480);
+		board.setVisible(true);
+		ImageIcon i = new ImageIcon(getClass().getResource("Connect4Board.png"));
+		board.setIcon(i);
+		board.setOpaque(true);
+		
+		layeredPane.add(board, new Integer(10));
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+	private void addingMouseAdapter(){
+		JLayeredPane layeredPane = getLayeredPane();
+		
+		chessPiecePanel.setBounds(0, 0,640,480);
+		chessPiecePanel.setVisible(true);
+		chessPiecePanel.setOpaque(false);
+		
+		Mouse mouse = new Mouse(chessPiecePanel,game,this);
+		chessPiecePanel.addMouseListener(mouse);
+		
+		layeredPane.add(chessPiecePanel,new Integer(8));
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 
+	
+	/**
+	 * This is only called when we get into the whole gaming system
+	 */
+	private void frameSetup() {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new FlowLayout());
+		pack();
+		setSize(new Dimension(640, 508));
 	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
