@@ -50,8 +50,8 @@ public class Mouse implements MouseListener {
 		if (game.checkValidMove(col)) {
 			game.makeMove(col);
 			Graphics g = target.getGraphics();
-			g.drawImage(image[player - 1], (int) ((col) * colWidth)+15,
-					400 - top * 80 , 68, 80, null);
+			g.drawImage(image[player - 1], (int) ((col) * colWidth)+13,
+					406 - top * 80 , 75, 75, null);
 			target.paint(g);
 		}
 
