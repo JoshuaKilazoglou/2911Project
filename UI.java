@@ -3,13 +3,14 @@ import java.awt.*;
 import javax.swing.*;
 
 public class UI extends JFrame {
-	private JFrame frame;
 	private Game game;
+	private Layer chessPiecePanel;
 	/*
 	 * Precondition:Nothing
 	 * Postcondition:A frame containing new content is inserted to frame
 	 */
 	public UI() {
+		super();
 		creatConetent();
 	}
 
@@ -19,15 +20,16 @@ public class UI extends JFrame {
 	 */
 	public void creatConetent(){
 		game = new Game();
+		chessPiecePanel = new Layer();
 		frameSetup();
 		addingPanel();
 		addingMouseAdapter();
-		frame.setVisible(true);
+		setVisible(true);
 	}
 	
 
 	private void addingPanel() {
-		JLayeredPane layeredPane = frame.getLayeredPane();
+		JLayeredPane layeredPane = getLayeredPane();
 		layeredPane.setVisible(true);
 		layeredPane.setSize(640, 480);
 		
@@ -42,17 +44,16 @@ public class UI extends JFrame {
 	}
 
 	private void addingMouseAdapter(){
-		JLayeredPane layeredPane = frame.getLayeredPane();
+		JLayeredPane layeredPane = getLayeredPane();
 		
-		Layer lowerLayer = new Layer();
-		lowerLayer.setBounds(0, 0,640,480);
-		lowerLayer.setVisible(true);
-		lowerLayer.setOpaque(false);
+		chessPiecePanel.setBounds(0, 0,640,480);
+		chessPiecePanel.setVisible(true);
+		chessPiecePanel.setOpaque(false);
 		
-		Mouse mouse = new Mouse(lowerLayer,game);
-		lowerLayer.addMouseListener(mouse);
+		Mouse mouse = new Mouse(chessPiecePanel,game,this);
+		chessPiecePanel.addMouseListener(mouse);
 		
-		layeredPane.add(lowerLayer,new Integer(8));
+		layeredPane.add(chessPiecePanel,new Integer(8));
 	}
 
 
@@ -61,11 +62,10 @@ public class UI extends JFrame {
 	 * This is only called when we get into the whole gaming system
 	 */
 	private void frameSetup() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new FlowLayout());
-		frame.pack();
-		frame.setSize(new Dimension(640, 508));
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new FlowLayout());
+		pack();
+		setSize(new Dimension(640, 508));
 	}
 }
