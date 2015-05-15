@@ -29,7 +29,7 @@ public class EntrancePanel extends JPanel {
 	}
 
 	private void addingButton(JPanel target) {
-		JPanel thisClass = this;
+		final JPanel thisClass = this;
 		
 		JButton newGame = new JButton("NewGame");
 		newGame.setVisible(true);
@@ -38,7 +38,7 @@ public class EntrancePanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JPanel mode = myFrame.getTheOtherPanel(thisClass);
+				final JPanel mode = myFrame.getTheOtherPanel(thisClass);
 				mode.setVisible(true);
 				myFrame.add(mode);
 				setVisible(false);

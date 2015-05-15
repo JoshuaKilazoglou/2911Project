@@ -20,7 +20,7 @@ public class ChessMouse implements MouseListener {
 	JDialog dialog;
 	Color[] color = new Color[2];
 
-	public ChessMouse(Layer target, Game game,BoardUI ui) {
+	public ChessMouse(Layer target, final Game game,final BoardUI ui) {
 		this.target = target;
 		this.game = game;
 		this.ui = ui;

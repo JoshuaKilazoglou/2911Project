@@ -27,7 +27,8 @@ public class Game{
 		return ((player == P1) ? P2 : P1);
 	}
 
-	// check if someone won the game, if someone won, the state is 2, else the state is 0
+	// check if someone won the game, if someone won, the state is 2, if the board is full the state is 1
+	// else the state is 0
 	public int getState(){
 		return state;
 	}
@@ -54,6 +55,9 @@ public class Game{
 			board.addChecker(y,x,player);
 			if(win(y,x,player))
 				state = 2;
+			if(board.isBoardFull())
+				state = 1;
+
 			updateLastMove(y,x);
 			player = switchPlayer();
 			return y;
@@ -199,6 +203,7 @@ public class Game{
 
 	// undo redo function
 	// undo the move, the player is also changed, the checker on the board is deleted
+	// if undo success return true, if not(the player nevered player a move, the player have undoed all his move)
 	public boolean undo(){
 		if(lastmove.x() == -1)
 			return false;
@@ -211,6 +216,7 @@ public class Game{
 
 	// undo redo function
 	// redo the move, the player is changed, the checker is added to the board
+	// return true for success and false for not
 	public boolean redo(){
 		if(lastmove == null || lastmove.next() == null)
 			return false;
@@ -223,5 +229,10 @@ public class Game{
 
 	public Board getBoard(){
 		return board;
+	}
+
+	// returns the checker at row x, col y, 0 for nothing, 1 for p1 and 2 for p2
+	public int whatsHere(int x,int y){
+		return board.whatsHere(x,y);
 	}
 }

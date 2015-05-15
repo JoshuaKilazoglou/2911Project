@@ -56,7 +56,7 @@ public class ModePanel extends JPanel{
 			}
 		});
 		
-		ModePanel thisClass = this;
+		final ModePanel thisClass = this;
 		JButton back = new JButton("Back to menu");
 		back.setVisible(true);
 		back.setPreferredSize(new Dimension(40,30));
@@ -65,7 +65,7 @@ public class ModePanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);	
-				JPanel menu = myFrame.getTheOtherPanel(thisClass);
+				final JPanel menu = myFrame.getTheOtherPanel(thisClass);
 				menu.setVisible(true);
 				myFrame.add(menu);
 			}

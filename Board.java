@@ -42,6 +42,14 @@ public class Board {
 	public void clearBoard(){
 		board = new int[this.X][this.Y];
 	}
+
+	public boolean isBoardFull(){
+		for(int[] row : this.board)
+			for(int i : row)
+				if(i == 0) 
+					return false;
+		return true;
+	}
 }
 
 
