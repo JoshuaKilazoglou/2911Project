@@ -4,7 +4,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-          	UI connect4 = new UI();
+            	MenuUI  Menu = new MenuUI();
             }
         });
 	}
