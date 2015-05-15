@@ -1,7 +1,8 @@
 
 
 public class Game{
-	public static final int P1 = 1, P2 = 2, NOP = 0;  
+	public static final int P1 = 1, P2 = 2, NOP = 0; 
+	public static final int ROW = 6,COL = 7; 
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Board board;
 	private node lastmove; // undo redo element
@@ -126,5 +127,27 @@ public class Game{
 	// returns the checker at row x, col y, 0 for nothing, 1 for p1 and 2 for p2
 	public int whatsHere(int x,int y){
 		return board.whatsHere(x,y);
+	}
+
+	// get UI column axis in pixel
+	public static int getX(int x){
+		return x*Board.CRADUIS*2 + x*Board.SIDE_MARGIN*2 + Board.INITIAL_SIDE_MARGIN;
+	}
+
+	// get UI row axis in pixel
+	public static int getY(int y){
+		return y*Board.CRADUIS*2 + y*Board.TOP_MARGIN*2 + Board.TOP_MARGIN;
+	}
+
+	// gets the virtual/backend board col index
+	// if the click was not in a circle return -1;
+	public static int getCol(double x){
+		for(int i = 0; i < COL; i++){
+			int col = getX(i);
+			if(x >= col && x <= col+Board.CRADUIS*2)
+//				return (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
+				return i;
+		}
+		return -1;
 	}
 }

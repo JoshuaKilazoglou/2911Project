@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
-	public static final int CRADUIS = 50;
-	public static final double COLWIDTH = 90.0;
-	public static final double FCOLWID = 92.0;
+public class Board{
+	public static final int CRADUIS = 35;
+	public static final int INITIAL_SIDE_MARGIN = 15;
+	public static final int TOP_MARGIN = 5;
+	public static final int SIDE_MARGIN = 10;
 
 	private int[][] board;
 	private int X,Y;
@@ -61,7 +62,7 @@ public class Board {
 
 		for(int i = 1; sideA || sideB; i++){
 			if(sideA)
-			 	if(y+i >= 7)
+			 	if(y+i >= Y)
 			 		sideA = false;
 				else if(whatsHere(x,y+i) == player)
 					count++;
@@ -87,7 +88,7 @@ public class Board {
 
 		for(int i = 1; sideA || sideB; i++){
 			if(sideA)
-				if(x+i >= 6)
+				if(x+i >= X)
 					sideA = false;
 				else if(whatsHere(x+i,y) == player)
 					count++;
@@ -115,7 +116,7 @@ public class Board {
 
 		for(int i = 1; sideA || sideB; i++){
 			if(sideA)
-				if (x+i >= 6 || y-i < 0)
+				if (x+i >= X || y-i < 0)
 					sideA = false;
 				else if(whatsHere(x+i,y-i) == player)
 					count++;
@@ -123,7 +124,7 @@ public class Board {
 					sideA = false;
 
 			if(sideB)
-				if(x-i < 0 || y+i >= 7)
+				if(x-i < 0 || y+i >= Y)
 					sideB = false;
 				else if(whatsHere(x-i,y+i) == player)
 					count++;
@@ -142,7 +143,7 @@ public class Board {
 
 		for(int i = 1; sideA || sideB; i++){
 			if(sideA)
-				if (x+i >= 6 || y+i >= 7)
+				if (x+i >= X || y+i >= Y)
 					sideA = false;
 				else if(whatsHere(x+i,y+i) == player)
 					count++;
