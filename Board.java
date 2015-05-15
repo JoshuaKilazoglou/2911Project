@@ -55,7 +55,7 @@ public class Board {
 		return true;
 	}
 
-	private boolean rowCheck(int x,int y, int player){
+	public boolean rowCheck(int x,int y, int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -81,7 +81,7 @@ public class Board {
 
 		return false;
 	}
-	private boolean colCheck(int x,int y, int player){
+	public boolean colCheck(int x,int y, int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -109,7 +109,7 @@ public class Board {
 	}
 
 	// these are a bit mind fuck since we start from the bottom
-	private boolean LdiagCheck(int x,int y, int player){
+	public boolean LdiagCheck(int x,int y, int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -136,7 +136,7 @@ public class Board {
 		return false;
 	}
 
-	private boolean RdiagCheck(int x,int y, int player){
+	public boolean RdiagCheck(int x,int y, int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
