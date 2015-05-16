@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class UI extends JFrame{
 	private JPanel toolbar;
-	private JButton startButton,undoButton,redoButton,exitButton;
+	private JButton startButton,undoButton,redoButton,exitButton,backToMenu;
 	private BoardGUI board;
 
 	public UI(){
@@ -24,15 +24,21 @@ public class UI extends JFrame{
 		undoButton = new JButton("Undo");
 		redoButton = new JButton("Redo");
 		exitButton = new JButton("Exit");
+		backToMenu = new JButton("Back");
+
 		toolbar.add(startButton);
 		toolbar.add(undoButton);
 		toolbar.add(redoButton);
 		toolbar.add(exitButton);
+		toolbar.add(backToMenu);
+
 		listener lis = new listener();
 		startButton.addActionListener(lis);
 		undoButton.addActionListener(lis);
 		redoButton.addActionListener(lis);
 		exitButton.addActionListener(lis);
+		backToMenu.addActionListener(lis);
+
 		toolbar.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		add(toolbar,BorderLayout.SOUTH);
 
@@ -54,6 +60,8 @@ public class UI extends JFrame{
 			}else if(obj==exitButton){
 				System.out.println("Exit");
 				System.exit(1);
+			}else if(obj==backToMenu){
+				// What to do if back to menu;
 			}
 		}
 	}
