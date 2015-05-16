@@ -9,7 +9,7 @@ public class node {
 		this.next = null;
 	}
 	
-	node(int x,int y,int player,node prev, node next){
+	node(int x,int y,node prev, node next){
 		this.x = x;
 		this.y = y;
 		this.prev = prev;

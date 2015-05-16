@@ -1,24 +1,22 @@
-
-
 public class Game{
-	public static final int P1 = 1, P2 = 2, NOP = 0; 
-	public static final int ROW = 6,COL = 7; 
+	public static final int P1 = 1, P2 = 2, NOP = 0;  
+	public static final int ROW = 6,COL = 7;
 	private int player; // 1 for player 1 and 2 for player 2.
-	private Board board;
+	private Connect4Board board;
 	private node lastmove; // undo redo element
 	private int state; // 0 for normal state, 2 for someone won
 
 	Game(){
 		player = 1;
 		state = 0;
-		board = new Board(6,7);
+		board = new Connect4Board(ROW,COL);
 		lastmove = new node(); // undo redo element
 	}
 
 	// returns the available row to input. e.g. if the 1st row has no checker return this row
 	public int top(int x){
 		int i = 0;
-		while(i < 6 && board.whatsHere(i,x) != NOP)
+		while(i < ROW && board.whatsHere(i,x) != NOP)
 			i++;
 		return i;
 	}
@@ -42,14 +40,6 @@ public class Game{
 		player = 1;
 	}
 
-	/**
-	 * make the move and check if the game has been won, if it has the game state is set to 2
-	 * also switch the player and returns the top row(the row where the checker is added)
-	 * precondition:
-	 * postcondition:return 1 or (return 0,2 and move add to the board)
-	 * @param x
-	 * @return
-	 */
 	public int makeMove(int x){
 			//x out of bound or the column is full thus no move is made or there's already another player
 			int y = top(x);
@@ -67,7 +57,7 @@ public class Game{
 	// check if the move is legal, so the column is not out of bound, the column is not full
 	// and the top element is not occupied
 	public boolean checkValidMove(int x){
-		if(x < 0 || x >= 7 || board.whatsHere(5,x) != NOP 
+		if(x < 0 || x >= COL || board.whatsHere(ROW-1,x) != NOP 
 			|| board.whatsHere(top(x),x) != NOP)
 			return false;
 		return true;
@@ -84,7 +74,7 @@ public class Game{
 	// undo redo function
 	// add a move to the linked list
 	private void updateLastMove(int x,int y){
-		node newmove = new node(x,y,player,null,null);
+		node newmove = new node(x,y,null,null);
 		lastmove.attach(newmove);
 		lastmove = newmove;
 	}
@@ -120,7 +110,7 @@ public class Game{
 		return true;
 	}
 
-	public Board getBoard(){
+	public Connect4Board getBoard(){
 		return board;
 	}
 
@@ -131,20 +121,20 @@ public class Game{
 
 	// get UI column axis in pixel
 	public static int getX(int x){
-		return x*Board.CRADUIS*2 + x*Board.SIDE_MARGIN*2 + Board.INITIAL_SIDE_MARGIN;
+		return x*Connect4Board.CRADUIS*2 + x*Connect4Board.SIDE_MARGIN*2 + Connect4Board.INITIAL_SIDE_MARGIN;
 	}
 
 	// get UI row axis in pixel
 	public static int getY(int y){
-		return y*Board.CRADUIS*2 + y*Board.TOP_MARGIN*2 + Board.TOP_MARGIN;
+		return y*Connect4Board.CRADUIS*2 + y*Connect4Board.TOP_MARGIN*2 + Connect4Board.TOP_MARGIN;
 	}
 
 	// gets the virtual/backend board col index
 	// if the click was not in a circle return -1;
-	public static int getCol(double x){
+	public static int getCol(int width, double x){
 		for(int i = 0; i < COL; i++){
-			int col = getX(i);
-			if(x >= col && x <= col+Board.CRADUIS*2)
+			int col = getX(i)+width;
+			if(x >= col && x <= col+Connect4Board.CRADUIS*2)
 //				return (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
 				return i;
 		}

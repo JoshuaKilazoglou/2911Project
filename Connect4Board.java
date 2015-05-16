@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board{
+public class Connect4Board{
 	public static final int CRADUIS = 35;
 	public static final int INITIAL_SIDE_MARGIN = 15;
 	public static final int TOP_MARGIN = 5;
@@ -10,7 +10,7 @@ public class Board{
 	private int[][] board;
 	private int X,Y;
 
-	Board(int x,int y){
+	Connect4Board(int x,int y){
 		this.X = x;
 		this.Y = y;
 
