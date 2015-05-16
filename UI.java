@@ -2,10 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
 class Board extends JPanel implements MouseListener{
 	Game game;
 	Image img;
