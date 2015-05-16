@@ -4,7 +4,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	MenuUI  Menu = new MenuUI();
+            	MenuFrame  Menu = new MenuFrame();
             }
         });
 	}
