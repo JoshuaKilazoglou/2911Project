@@ -48,18 +48,18 @@ class Board extends JPanel implements MouseListener{
 		super.paintComponent(g);
 		int x = getDisImgToBorder(); // to keep the picture in the middle
 		int y = getDisImgToTop();
-		g.drawImage(img,x,y,null);
-
+//		g.drawImage(img,x,y,null);
+		g = (Graphic2D) 
 		for(int i = ROW-1; i >= 0; i--)
 			for(int j = 0; j < COL; j++){
 				g.setColor(Color.BLACK);
 				int col = Game.getX(j);
 				int row = Game.getY(ROW-1-i);
-				g.drawOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 				if(game.whatsHere(i,j) != 0){
 					g.setColor((game.whatsHere(i,j) == 1)? Color.RED:Color.YELLOW);
 					g.fillOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 				}
+				g.drawOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 				
 			}
 	}
