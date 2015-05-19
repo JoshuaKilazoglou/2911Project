@@ -1,10 +1,12 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
 class Board extends JPanel implements MouseListener{
 	Game game;
 	Image img;
+	Dialog dialog;
 	boolean isGameOver = false;
 
 	final static int ROW = 6;
@@ -25,10 +27,10 @@ class Board extends JPanel implements MouseListener{
 			repaint();
 	}
 
-	public Board(){
+	public Board(Dialog dialog){
 		game = new Game();
+		this.dialog = dialog;
 		setBackground(Color.white);
-		myFrame = frame;
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
 	}
@@ -77,20 +79,20 @@ class Board extends JPanel implements MouseListener{
    		
    		if(col == -1)
    			return;
-
    		if(!game.checkValidMove(col))
    			return;
 		
-   		int row = game.makeMove(col);
-   		
-		if (game.getStatus() == 2){
-			JDialog = new (SwingUtilities.getWindowAncestor(this),true);
+   		game.makeMove(col);
 			
 		/*
 			What happens when won? game.getState() = 2;
 			what happens when the board is full? game.getState() = 1;
    		*/
    		repaint();
+   		if (game.getState() == 2){
+			dialog.setModal(true);
+			dialog.setVisible(true);
+		}
    	}  
      
    	public void mouseEntered(MouseEvent e) {  
@@ -107,12 +109,13 @@ class Board extends JPanel implements MouseListener{
 
 public class BoardFrame extends JFrame{
 	private JPanel toolbar;
-	private JButton startButton,undoButton,redoButton,exitButton,backToMenu;
+	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,b1,b2,b3;
 	private Board board;
-
+	
 	public BoardFrame(){
 		super("BoardFrame");
-		board = new Board();
+		JDialog dialog = buildDialog();
+		board = new Board(dialog);
 		add(board);
 		addToolBar();
 		board.setOpaque(true);
@@ -120,6 +123,13 @@ public class BoardFrame extends JFrame{
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	private JDialog buildDialog() {
+		JDialog dialog = new JDialog(this);
+		dialog.setSize(300,200);
+		addButtontoDialog(dialog);
+		return dialog;
 	}
 
 	public void addToolBar(){
@@ -171,5 +181,44 @@ public class BoardFrame extends JFrame{
 				JFrame current = new MenuFrame();
 			}
 		}
+	}
+	
+	private void addButtontoDialog(Dialog dialog){
+		b1 = new JButton("ReStart");
+		b2 = new JButton("Back to menu");
+		b3 = new JButton("Exit");
+		JPanel jpanel = new JPanel();
+		jpanel.add(b1);
+		jpanel.add(b2);
+		jpanel.add(b3);
+		ActionListenerForDialog lis = new ActionListenerForDialog();
+		b1.addActionListener(lis);
+		b2.addActionListener(lis);
+		b3.addActionListener(lis);
+		b1.setVisible(true);
+		b2.setVisible(true);
+		b3.setVisible(true);
+		dialog.add(jpanel);
+	}
+	
+	private class ActionListenerForDialog implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == b1){
+				System.out.println("Restart");
+				board.restartGame();
+				JDialog dialog = (JDialog) SwingUtilities.windowForComponent(b1);
+				dialog.setVisible(false);
+				dialog.dispose();
+			}	else if (e.getSource() == b2){
+				System.out.println("BackToMenu");
+				setVisible(false);
+				dispose();
+				JFrame current = new MenuFrame();
+			}	else if (e.getSource() == b3){
+				System.exit(0);
+			}		
+		}		
 	}
 }
