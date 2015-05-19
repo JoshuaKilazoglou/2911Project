@@ -4,10 +4,20 @@ import java.awt.*;
 import java.awt.event.*;
 
 class Board extends JPanel implements MouseListener{
+<<<<<<< Updated upstream
 	Game game;
 	Image img;
 	Dialog dialog;
 	boolean isGameOver = false;
+=======
+	private Game game;
+	private Image img;
+	private boolean isGameOver = false;
+	private boolean isFalling = false; // is a checker falling
+
+	private int fallingRow = 0;
+	private int fallingCol = 0;
+>>>>>>> Stashed changes
 
 	final static int ROW = 6;
 	final static int COL = 7;
@@ -51,9 +61,11 @@ class Board extends JPanel implements MouseListener{
 		super.paintComponent(g);
 		int x = getDisImgToBorder(); // to keep the picture in the middle
 		int y = getDisImgToTop();
-		g.drawImage(img,x,y,null);
 		Graphics2D g2d = (Graphics2D) g;
 
+
+
+		g.drawImage(img,x,y,null);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		for(int i = ROW-1; i >= 0; i--)
 			for(int j = 0; j < COL; j++){
@@ -82,7 +94,19 @@ class Board extends JPanel implements MouseListener{
    		if(!game.checkValidMove(col))
    			return;
 		
+<<<<<<< Updated upstream
    		game.makeMove(col);
+=======
+		Timer t = new Timer(5,this);
+		fallingCol = Game.getX(col);
+		fallingRow = 
+		t.start();
+
+		game.makeMove(col);
+  		
+		if (game.getStatus() == 2){
+			JDialog = new (SwingUtilities.getWindowAncestor(this),true);
+>>>>>>> Stashed changes
 			
 		/*
 			What happens when won? game.getState() = 2;

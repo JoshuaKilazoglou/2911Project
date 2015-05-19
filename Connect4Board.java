@@ -56,7 +56,7 @@ public class Connect4Board{
 		return true;
 	}
 
-	public boolean rowCheck(int x,int y, int player){
+	public int connectRow(int x,int y,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -76,13 +76,12 @@ public class Connect4Board{
 					count++;
 				else
 					sideB = false;
-			if(count >= 4)
-				return true;
 		}
 
-		return false;
+		return count;
 	}
-	public boolean colCheck(int x,int y, int player){
+
+	public int connectCol(int x,int y,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -102,15 +101,12 @@ public class Connect4Board{
 					count++;
 				else
 					sideB = false;
-			if(count >= 4)
-				return true;
 		}
 
-		return false;
+		return count;
 	}
 
-	// these are a bit mind fuck since we start from the bottom
-	public boolean LdiagCheck(int x,int y, int player){
+	public int connectLDiag(int x,int y,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -130,14 +126,12 @@ public class Connect4Board{
 					count++;
 				else
 					sideB = false;
-			if(count >= 4)
-				return true;
 		}
 
-		return false;
+		return count;
 	}
 
-	public boolean RdiagCheck(int x,int y, int player){
+	public int connectRDiag(int x,int y,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
 
@@ -157,9 +151,35 @@ public class Connect4Board{
 					count++;
 				else
 					sideB = false;
-			if(count >= 4)
-				return true;
 		}
+
+		return count;
+	}
+
+	public boolean rowCheck(int x,int y, int player){
+		if(connectRow(x,y,player) >= 4)
+			return true;
+
+		return false;
+	}
+	public boolean colCheck(int x,int y, int player){
+		if(connectCol(x,y,player) >= 4)
+			return true;
+
+		return false;
+	}
+
+	// these are a bit mind fuck since we start from the bottom
+	public boolean LdiagCheck(int x,int y, int player){
+		if(connectLDiag(x,y,player) >= 4)
+			return true;
+
+		return false;
+	}
+
+	public boolean RdiagCheck(int x,int y, int player){
+		if(connectRDiag(x,y,player) >= 4)
+			return true;
 
 		return false;
 	}
