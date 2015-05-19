@@ -6,7 +6,6 @@ class Board extends JPanel implements MouseListener{
 	Game game;
 	Image img;
 	boolean isGameOver = false;
-	private JFrame myFrame = BoardFrame.this;
 
 	final static int ROW = 6;
 	final static int COL = 7;
@@ -81,9 +80,13 @@ class Board extends JPanel implements MouseListener{
 
    		if(!game.checkValidMove(col))
    			return;
-
+		
    		int row = game.makeMove(col);
-   		/*
+   		
+		if (game.getStatus() == 2){
+			JDialog = new (SwingUtilities.getWindowAncestor(this),true);
+			
+		/*
 			What happens when won? game.getState() = 2;
 			what happens when the board is full? game.getState() = 1;
    		*/
