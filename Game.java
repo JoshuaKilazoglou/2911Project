@@ -141,12 +141,12 @@ public class Game{
 		return connected;
 	}
 
-	// get UI column axis in pixel
+	// get UI column axis in pixel without margin to the side of the window
 	public static int getX(int x){
 		return x*Connect4Board.CRADUIS*2 + x*Connect4Board.SIDE_MARGIN*2 + Connect4Board.INITIAL_SIDE_MARGIN;
 	}
 
-	// get UI row axis in pixel
+	// get UI row axis in pixel without margin to the top of the window
 	public static int getY(int y){
 		return y*Connect4Board.CRADUIS*2 + y*Connect4Board.TOP_MARGIN*2 + Connect4Board.TOP_MARGIN;
 	}

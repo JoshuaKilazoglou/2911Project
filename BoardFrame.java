@@ -1,24 +1,19 @@
 import javax.swing.*;
-
+import java.util.concurrent.*;
 import java.awt.*;
 import java.awt.event.*;
 
-class Board extends JPanel implements MouseListener{
-<<<<<<< Updated upstream
+class Board extends JPanel implements MouseListener,ActionListener{
 	Game game;
 	Image img;
 	Dialog dialog;
 	boolean isGameOver = false;
-=======
-	private Game game;
-	private Image img;
-	private boolean isGameOver = false;
+	Timer t;
 	private boolean isFalling = false; // is a checker falling
+	private int fallingRow = 0,valFall = 15,terminate = 0;
+	private int fallingCol = 0,col=0;
 
-	private int fallingRow = 0;
-	private int fallingCol = 0;
->>>>>>> Stashed changes
-
+	private final static int DURATION = 5;
 	final static int ROW = 6;
 	final static int COL = 7;
 
@@ -63,7 +58,10 @@ class Board extends JPanel implements MouseListener{
 		int y = getDisImgToTop();
 		Graphics2D g2d = (Graphics2D) g;
 
-
+		if(isFalling){
+			g2d.setColor((game.getCurrentPlayer()==1)?Color.RED:Color.YELLOW);
+			g2d.fillOval(fallingCol,fallingRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
+		}
 
 		g.drawImage(img,x,y,null);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -80,43 +78,53 @@ class Board extends JPanel implements MouseListener{
 			}
 	}
 
+	public void actionPerformed(ActionEvent e){
+		fallingRow += valFall;
+		repaint();
+		if(fallingRow+Connect4Board.TOP_MARGIN > terminate){
+			t.stop();
+			isFalling = false;
+			game.makeMove(this.col);	   		
+			repaint();
+   			if (game.getState() == 2){
+				dialog.setModal(true);
+				dialog.setVisible(true);
+			}
+		}
+	}
+
 	public void mousePressed(MouseEvent e) {
     	//
-    }  
-   
+    }
+
    	public void mouseClicked(MouseEvent e) {  
    		double location = e.getPoint().getX();
    		int borderDis = getDisImgToBorder();
-   		int col = Game.getCol(borderDis,location);
+   		int borderDisWidth = getDisImgToBorder();
+   		col = Game.getCol(borderDis,location);
    		
    		if(col == -1)
    			return;
    		if(!game.checkValidMove(col))
    			return;
 		
-<<<<<<< Updated upstream
-   		game.makeMove(col);
-=======
-		Timer t = new Timer(5,this);
-		fallingCol = Game.getX(col);
-		fallingRow = 
-		t.start();
+		t = new Timer(DURATION,this);
 
-		game.makeMove(col);
-  		
-		if (game.getStatus() == 2){
-			JDialog = new (SwingUtilities.getWindowAncestor(this),true);
->>>>>>> Stashed changes
-			
+		fallingCol = Game.getX(col)+borderDisWidth;
+		fallingRow = borderDis;
+		terminate = Game.getY(ROW-game.top(col)-1);
+		isFalling = true;
+
+		t.start();
 		/*
 			What happens when won? game.getState() = 2;
 			what happens when the board is full? game.getState() = 1;
    		*/
-   		repaint();
-   		if (game.getState() == 2){
-			dialog.setModal(true);
-			dialog.setVisible(true);
-		}
+		/*
+			I moved the dialog pop up to actionPerformed because timer runs asynchronous
+			and i can't find a way to access the thread componenet of the timer so I can't stop
+			it running at the same time with the dialog pop up.
+		*/
    	}  
      
    	public void mouseEntered(MouseEvent e) {  
