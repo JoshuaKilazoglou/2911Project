@@ -6,6 +6,7 @@ class Board extends JPanel implements MouseListener{
 	Game game;
 	Image img;
 	boolean isGameOver = false;
+	private JFrame myFrame = BoardFrame.this;
 
 	final static int ROW = 6;
 	final static int COL = 7;
@@ -28,6 +29,7 @@ class Board extends JPanel implements MouseListener{
 	public Board(){
 		game = new Game();
 		setBackground(Color.white);
+		myFrame = frame;
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
 	}
@@ -48,19 +50,20 @@ class Board extends JPanel implements MouseListener{
 		super.paintComponent(g);
 		int x = getDisImgToBorder(); // to keep the picture in the middle
 		int y = getDisImgToTop();
-//		g.drawImage(img,x,y,null);
-		g = (Graphic2D) 
+		g.drawImage(img,x,y,null);
+		Graphics2D g2d = (Graphics2D) g;
+
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		for(int i = ROW-1; i >= 0; i--)
 			for(int j = 0; j < COL; j++){
-				g.setColor(Color.BLACK);
 				int col = Game.getX(j);
 				int row = Game.getY(ROW-1-i);
 				if(game.whatsHere(i,j) != 0){
-					g.setColor((game.whatsHere(i,j) == 1)? Color.RED:Color.YELLOW);
-					g.fillOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
+					g2d.setColor((game.whatsHere(i,j) == 1)? Color.RED:Color.YELLOW);
+					g2d.fillOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 				}
-				g.drawOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
-				
+				g2d.setColor(Color.BLACK);
+				g2d.drawOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);	
 			}
 	}
 
