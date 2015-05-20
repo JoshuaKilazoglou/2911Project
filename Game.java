@@ -13,6 +13,9 @@ public class Game{
 		lastmove = new node(); // undo redo element
 	}
 
+	public void setGameState(int x){
+		state = x;
+	}
 	// returns the available row to input. e.g. if the 1st row has no checker return this row
 	public int top(int x){
 		int i = 0;
@@ -75,6 +78,7 @@ public class Game{
 	// add a move to the linked list
 	private void updateLastMove(int x,int y){
 		node newmove = new node(x,y,null,null);
+		newmove.setGameState(state);
 		lastmove.attach(newmove);
 		lastmove = newmove;
 	}
@@ -94,6 +98,7 @@ public class Game{
 		board.deleteChecker(lastmove.x(),lastmove.y());
 		player = switchPlayer();
 		lastmove = lastmove.prev();
+		state = lastmove.getState();
 		return true;
 	}
 
@@ -106,6 +111,7 @@ public class Game{
 
 		lastmove = lastmove.next();
 		board.addChecker(lastmove.x(),lastmove.y(),player);
+		state = lastmove.getState();
 		player = switchPlayer();
 		return true;
 	}

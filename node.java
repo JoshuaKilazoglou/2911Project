@@ -1,5 +1,5 @@
 public class node {
-	private int x,y;
+	private int x,y,gameState=0;
 	private node prev,next;
 	
 	node(){
@@ -14,6 +14,10 @@ public class node {
 		this.y = y;
 		this.prev = prev;
 		this.next = next;
+	}
+	
+	void setGameState(int x){
+		gameState = x;
 	}
 	
 	void attach(node next){
@@ -36,7 +40,10 @@ public class node {
 	public node next(){
 		return this.next;
 	}
-
+	
+	public int getState(){
+		return this.gameState;
+	}
 	public void printNexts(){
 		for(node temp = this; temp != null; temp = temp.next)
 			System.out.println("x: " + temp.x + ", y: " + temp.y);

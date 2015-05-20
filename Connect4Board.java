@@ -184,5 +184,3 @@ public class Connect4Board{
 		return false;
 	}
 }
-
-
