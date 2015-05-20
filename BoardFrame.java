@@ -109,7 +109,10 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
     	//
     }
 
-   	public void mouseClicked(MouseEvent e) {  
+   	public void mouseClicked(MouseEvent e) { 
+   		if(game.getState() == 2)
+   			return;
+   		
    		if(isAIMove)
 			return;
    		
@@ -197,6 +200,7 @@ public class BoardFrame extends JFrame{
 
 	private JDialog buildDialog() {
 		JDialog dialog = new JDialog(this);
+
 		dialog.setSize(300,200);
 		addButtontoDialog(dialog);
 		return dialog;
@@ -258,6 +262,8 @@ public class BoardFrame extends JFrame{
 		b2 = new JButton("Back to menu");
 		b3 = new JButton("Exit");
 		JPanel jpanel = new JPanel();
+		jpanel.setBorder(BorderFactory.createEmptyBorder(20,50,20,50));
+		jpanel.setLayout(new GridLayout(3,1,10,10));
 		jpanel.add(b1);
 		jpanel.add(b2);
 		jpanel.add(b3);

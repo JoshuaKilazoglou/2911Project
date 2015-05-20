@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import java.awt.*;
+import javax.swing.*;
 
 public class MenuFrame extends JFrame {
 	private MenuFrame thisClass = this;
@@ -52,6 +56,8 @@ public class MenuFrame extends JFrame {
 
 	private void buildEntrancePanel() {
 		entrance = new JPanel();
+		entrance.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		entrance.setLayout(new GridLayout(3,1,15,20));
 		newGameButton = new JButton("NewGame");
 		helpButton = new JButton("Help");
 		exitButton0 = new JButton("Exit");
@@ -70,6 +76,9 @@ public class MenuFrame extends JFrame {
 
 	private void buildModePanel() {
 		mode = new JPanel();
+		mode.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		mode.setLayout(new GridLayout(4,1,15,20));
+
 		pvpButton = new JButton("V.S. Friends");
 		pvAIButton = new JButton("V.S. AI");
 		backToMenuButton1 = new JButton("Back To Menu");
@@ -89,6 +98,9 @@ public class MenuFrame extends JFrame {
 
 	private void buildAIPanel() {
 		AI = new JPanel();
+		AI.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		AI.setLayout(new GridLayout(5,1,15,20));
+
 		hardButton = new JButton("Hard");
 		normalButton = new JButton("Normal");
 		easyButton = new JButton("Easy");
