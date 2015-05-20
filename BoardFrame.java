@@ -1,19 +1,23 @@
 import javax.swing.*;
-import java.util.concurrent.*;
 import java.awt.*;
 import java.awt.event.*;
 
-class Board extends JPanel implements MouseListener,ActionListener{
+class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
 	Game game;
+	basicAI AI = null;
 	Image img;
 	Dialog dialog;
-	boolean isGameOver = false;
-	Timer t;
-	private boolean isFalling = false; // is a checker falling
-	private int fallingRow = 0,valFall = 15,terminate = 0;
-	private int fallingCol = 0,col=0;
-
+	
 	private final static int DURATION = 5;
+	Timer t = null;
+	private boolean isFalling = false; // is a checker falling
+	private int fallingRow = 0,fallSpeed = 12,terminate = 0;
+	private int fallingCol = 0,col=0;
+	
+	private int cursorCol = -1;
+	private boolean isAIMove = false;
+	
+
 	final static int ROW = 6;
 	final static int COL = 7;
 
@@ -38,6 +42,7 @@ class Board extends JPanel implements MouseListener,ActionListener{
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 
 	public int getDisImgToBorder(){
@@ -49,7 +54,7 @@ class Board extends JPanel implements MouseListener,ActionListener{
 	public int getDisImgToTop(){
 		int imgHeight = img.getHeight(this);
 		int WinHeight = getHeight();
-		return (WinHeight-imgHeight)/2;
+		return (WinHeight-imgHeight)/2+Connect4Board.CRADUIS;
 	}
 
 	public void paintComponent(Graphics g){
@@ -57,14 +62,20 @@ class Board extends JPanel implements MouseListener,ActionListener{
 		int x = getDisImgToBorder(); // to keep the picture in the middle
 		int y = getDisImgToTop();
 		Graphics2D g2d = (Graphics2D) g;
-
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		if(isFalling){
 			g2d.setColor((game.getCurrentPlayer()==1)?Color.RED:Color.YELLOW);
 			g2d.fillOval(fallingCol,fallingRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 		}
 
+		if(cursorCol != -1){
+			int cursorRow = y-Connect4Board.CRADUIS*2;
+			g2d.setColor((game.getCurrentPlayer()==1)?Color.RED:Color.YELLOW);
+			g2d.fillOval(cursorCol-Connect4Board.CRADUIS,cursorRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);	
+		}
+		
 		g.drawImage(img,x,y,null);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		for(int i = ROW-1; i >= 0; i--)
 			for(int j = 0; j < COL; j++){
 				int col = Game.getX(j);
@@ -79,7 +90,7 @@ class Board extends JPanel implements MouseListener,ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e){
-		fallingRow += valFall;
+		fallingRow += fallSpeed;
 		repaint();
 		if(fallingRow+Connect4Board.TOP_MARGIN > terminate){
 			t.stop();
@@ -90,6 +101,7 @@ class Board extends JPanel implements MouseListener,ActionListener{
 				dialog.setModal(true);
 				dialog.setVisible(true);
 			}
+   			t = null;
 		}
 	}
 
@@ -98,6 +110,13 @@ class Board extends JPanel implements MouseListener,ActionListener{
     }
 
    	public void mouseClicked(MouseEvent e) {  
+   		if(isAIMove)
+			return;
+   		
+   		if(t != null)
+			return;
+		
+   		
    		double location = e.getPoint().getX();
    		int borderDis = getDisImgToBorder();
    		int borderDisWidth = getDisImgToBorder();
@@ -105,8 +124,10 @@ class Board extends JPanel implements MouseListener,ActionListener{
    		
    		if(col == -1)
    			return;
+   		
    		if(!game.checkValidMove(col))
    			return;
+   		
 		
 		t = new Timer(DURATION,this);
 
@@ -137,6 +158,23 @@ class Board extends JPanel implements MouseListener,ActionListener{
    	public void mouseReleased(MouseEvent e) {  
    		//
    	}
+   	
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		int cursorPos = e.getX();
+		if(cursorPos < getDisImgToBorder()+Connect4Board.INITIAL_SIDE_MARGIN+Connect4Board.CRADUIS)
+			cursorCol = getDisImgToBorder()+Connect4Board.INITIAL_SIDE_MARGIN+Connect4Board.CRADUIS;
+		else if(cursorPos > getDisImgToBorder()+Game.getX(COL-1)+Connect4Board.CRADUIS)
+			cursorCol = getDisImgToBorder()+Game.getX(COL-1)+Connect4Board.CRADUIS;
+		else
+			cursorCol = cursorPos;
+		
+		repaint();
+	}
 }
 
 public class BoardFrame extends JFrame{
@@ -151,7 +189,7 @@ public class BoardFrame extends JFrame{
 		add(board);
 		addToolBar();
 		board.setOpaque(true);
-		setSize(640,560);
+		setSize(680,630);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

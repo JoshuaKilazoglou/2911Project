@@ -3,7 +3,7 @@ public class basicAI implements AI{
 
 	public int decideMove(Board currentBoard) {
 		
-		int move;
+		int move = 0;
 		
 		
 		
@@ -12,7 +12,7 @@ public class basicAI implements AI{
 	
 	private int score(int move) {
 		//TODO
-		
+		return 0;
 	}
 
 	
