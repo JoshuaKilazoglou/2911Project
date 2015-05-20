@@ -200,4 +200,12 @@ public class MenuFrame extends JFrame {
 			}
 		}
 	}
+	
+	public JPanel getEntrancePanel(){
+		return entrance;
+	}
+	
+	public JPanel getModePanel(){
+		return mode;
+	}
 }

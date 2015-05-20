@@ -147,6 +147,7 @@ public class Game{
 		return connected;
 	}
 
+	
 	// get UI column axis in pixel without margin to the side of the window
 	public static int getX(int x){
 		return x*Connect4Board.CRADUIS*2 + x*Connect4Board.SIDE_MARGIN*2 + Connect4Board.INITIAL_SIDE_MARGIN;
@@ -167,5 +168,11 @@ public class Game{
 				return i;
 		}
 		return -1;
+	}
+	
+	public node getLastMove(){
+		if(lastmove.x() == -1)
+			return null;
+		return lastmove;
 	}
 }

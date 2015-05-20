@@ -21,6 +21,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	final static int ROW = 6;
 	final static int COL = 7;
 
+	public int getCurrentPlayer(){
+		return game.switchPlayer();
+	}
 	public void restartGame(){
 		game.restartGame();
 		repaint();
@@ -87,6 +90,17 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 				g2d.setColor(Color.BLACK);
 				g2d.drawOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);	
 			}
+		
+		
+		node lastmove = game.getLastMove();
+		if(lastmove != null){		
+			int lastRow = Game.getY(ROW-lastmove.x()-1);
+			int lastCol = Game.getX(lastmove.y());
+		
+			g2d.setColor(Color.GREEN);
+			g2d.setStroke(new BasicStroke(5));
+			g2d.drawOval(x+lastCol, y+lastRow, Connect4Board.CRADUIS*2, Connect4Board.CRADUIS*2);
+		}
 	}
 
 	public void actionPerformed(ActionEvent e){
@@ -98,13 +112,18 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			game.makeMove(this.col);	   		
 			repaint();
    			if (game.getState() == 2){
+   				dialog.setTitle("Player " + game.switchPlayer() + " Win");
+				dialog.setModal(true);
+				dialog.setVisible(true);
+			} else if (game.getState() == 1){
+   				dialog.setTitle("The Board is full");
 				dialog.setModal(true);
 				dialog.setVisible(true);
 			}
    			t = null;
 		}
 	}
-
+	
 	public void mousePressed(MouseEvent e) {
     	//
     }
@@ -193,14 +212,17 @@ public class BoardFrame extends JFrame{
 		addToolBar();
 		board.setOpaque(true);
 		setSize(680,630);
-		setVisible(true);
 		setLocationRelativeTo(null);
+		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private JDialog buildDialog() {
 		JDialog dialog = new JDialog(this);
-
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		final int x = (screenSize.width - 300) / 2;
+		final int y = (screenSize.height - 200) / 2;
+		dialog.setLocation(x, y);
 		dialog.setSize(300,200);
 		addButtontoDialog(dialog);
 		return dialog;
@@ -252,7 +274,10 @@ public class BoardFrame extends JFrame{
 				System.out.println("BackToMenu");
 				setVisible(false);
 				dispose();
-				JFrame current = new MenuFrame();
+				MenuFrame current = new MenuFrame();
+				current.getModePanel().setVisible(true);
+				current.getEntrancePanel().setVisible(false);
+				current.add(current.getModePanel());
 			}
 		}
 	}
