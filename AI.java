@@ -1,6 +1,6 @@
 
 public interface AI {
 	
-	public int decideMove(Board currentBoard);
+	public int decideMove(Game currentBoard);
 
 }

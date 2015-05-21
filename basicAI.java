@@ -1,7 +1,7 @@
 
 public class basicAI implements AI{
 
-	public int decideMove(Board currentBoard) {
+	public int decideMove(Game currentBoard) {
 		
 		int move = 0;
 		

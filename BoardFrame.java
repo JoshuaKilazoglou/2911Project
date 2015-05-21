@@ -10,13 +10,15 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	private final static int DURATION = 5;
 	Timer t = null;
+	Timer t2 = null;
+
 	private boolean isFalling = false; // is a checker falling
 	private int fallingRow = 0,fallSpeed = 12,terminate = 0;
 	private int fallingCol = 0,col=0;
 	
 	private int cursorCol = -1;
 	private boolean isAIMove = false;
-	
+	private int AIMode = 0;
 
 	final static int ROW = 6;
 	final static int COL = 7;
@@ -26,22 +28,39 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	}
 	public void restartGame(){
 		game.restartGame();
+		isAIMove = false;
 		repaint();
 	}
 
 	public void undo(){
-		if(game.undo())
+		if(isAIMove)
+			return;
+
+		if(AIMode != 0)
+			if(game.undo() && game.undo())
+				repaint();
+		else if(game.undo())
 			repaint();
 	}
 
 	public void redo(){
-		if(game.redo())
+		if(isAIMove)
+			return;
+
+		if(AIMode != 0)
+			if(game.redo() && game.redo())
+				repaint();
+		else if(game.redo())
 			repaint();
 	}
 
-	public Board(Dialog dialog){
+	public Board(Dialog dialog,int mode){
 		game = new Game();
 		this.dialog = dialog;
+		this.AIMode = mode;
+		if(mode != 0)
+			this.AI = new basicAI();
+		
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
@@ -103,25 +122,53 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		}
 	}
 
+	public void prepareAnimation(){
+		t = new Timer(DURATION,this);
+		fallingCol = Game.getX(this.col)+getDisImgToBorder();
+		fallingRow = getDisImgToTop();
+		terminate = Game.getY(ROW-game.top(this.col)-1);
+		isFalling = true;
+	}
+
+	public void checkState(){
+		if (game.getState() == 2){
+   			dialog.setTitle("Player " + game.switchPlayer() + " Win");
+			dialog.setModal(true);
+			dialog.setVisible(true);
+		} else if (game.getState() == 1){
+   			dialog.setTitle("The Board is full");
+			dialog.setModal(true);
+			dialog.setVisible(true);
+		}
+	}
+
 	public void actionPerformed(ActionEvent e){
 		fallingRow += fallSpeed;
 		repaint();
 		if(fallingRow+Connect4Board.TOP_MARGIN > terminate){
 			t.stop();
 			isFalling = false;
+			
 			game.makeMove(this.col);	   		
 			repaint();
-   			if (game.getState() == 2){
-   				dialog.setTitle("Player " + game.switchPlayer() + " Win");
-				dialog.setModal(true);
-				dialog.setVisible(true);
-			} else if (game.getState() == 1){
-   				dialog.setTitle("The Board is full");
-				dialog.setModal(true);
-				dialog.setVisible(true);
+			t = null;
+   			
+   			int state = game.getState();
+   			checkState();
+   			
+   			if (AIMode != 0 && isAIMove == false && state == 0){
+				isAIMove = true;
+				int AIMove = AI.decideMove(game);
+				if(game.checkValidMove(AIMove))
+					game.makeMove(AIMove);
+				else
+					System.out.println("You've made an invalid move at\nCol: " + AIMove);
+				repaint();
+				isAIMove = false;
 			}
-   			t = null;
-		}
+
+			checkState();
+   		}
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -140,9 +187,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		
    		
    		double location = e.getPoint().getX();
-   		int borderDis = getDisImgToBorder();
-   		int borderDisWidth = getDisImgToBorder();
-   		col = Game.getCol(borderDis,location);
+   		col = Game.getCol(getDisImgToBorder(),location);
    		
    		if(col == -1)
    			return;
@@ -150,14 +195,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    		if(!game.checkValidMove(col))
    			return;
    		
-		
-		t = new Timer(DURATION,this);
-
-		fallingCol = Game.getX(col)+borderDisWidth;
-		fallingRow = borderDis;
-		terminate = Game.getY(ROW-game.top(col)-1);
-		isFalling = true;
-
+		prepareAnimation();
 		t.start();
 		/*
 			What happens when won? game.getState() = 2;
@@ -204,10 +242,10 @@ public class BoardFrame extends JFrame{
 	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,b1,b2,b3;
 	private Board board;
 	
-	public BoardFrame(){
+	public BoardFrame(int mode){
 		super("BoardFrame");
 		JDialog dialog = buildDialog();
-		board = new Board(dialog);
+		board = new Board(dialog,mode);
 		add(board);
 		addToolBar();
 		board.setOpaque(true);

@@ -152,7 +152,7 @@ public class MenuFrame extends JFrame {
 				entrance.setVisible(true);
 				add(entrance);
 			} else if (object == pvpButton) {
-				boardFrame = new BoardFrame();
+				boardFrame = new BoardFrame(0);
 				//boardFrame.setButton(specialListener);
 				setVisible(false);
 				dispose();
@@ -178,19 +178,19 @@ public class MenuFrame extends JFrame {
 				entrance.setVisible(true);
 				add(entrance);
 			} else if (object == hardButton) {
-				boardFrame = new BoardFrame();
+				boardFrame = new BoardFrame(3);
 				//boardFrame.setButton(specialListener);
 				setVisible(false);
 				dispose();
 				boardFrame.setVisible(true);
 			} else if (object == normalButton) {
-				boardFrame = new BoardFrame();
+				boardFrame = new BoardFrame(2);
 				//boardFrame.setButton(specialListener);
 				setVisible(false);
 				dispose();
 				boardFrame.setVisible(true);
 			} else if (object == easyButton) {
-				boardFrame = new BoardFrame();
+				boardFrame = new BoardFrame(1);
 				//boardFrame.setButton(specialListener);
 				setVisible(false);
 				dispose();
