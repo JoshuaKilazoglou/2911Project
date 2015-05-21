@@ -12,6 +12,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	Timer t = null;
 	Timer t2 = null;
 
+	private boolean playerWon = false;
+	private boolean aIWon = false;
+
 	private boolean isFalling = false; // is a checker falling
 	private int fallingRow = 0,fallSpeed = 12,terminate = 0;
 	private int fallingCol = 0,col=0;
@@ -23,12 +26,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	final static int ROW = 6;
 	final static int COL = 7;
 
-	public int getCurrentPlayer(){
-		return game.switchPlayer();
-	}
 	public void restartGame(){
 		game.restartGame();
 		isAIMove = false;
+		playerWon = false;
+		aIWon = false;
 		repaint();
 	}
 
@@ -36,10 +38,17 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		if(isAIMove)
 			return;
 
-		if(AIMode != 0)
-			if(game.undo() && game.undo())
+		if(playerWon){
+			if(game.undo())
 				repaint();
-		else if(game.undo())
+			playerWon = false;
+			System.out.println();
+		} else if(AIMode != 0) {
+			if(game.undo()) 
+				repaint();
+			if(game.undo())
+				repaint();
+		} else if(game.undo())
 			repaint();
 	}
 
@@ -47,11 +56,19 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		if(isAIMove)
 			return;
 
-		if(AIMode != 0)
-			if(game.redo() && game.redo())
+		if(AIMode != 0) {
+			if(game.redo())
 				repaint();
-		else if(game.redo())
+			if(game.redo())
+				repaint();
+		} else if(game.redo())
 			repaint();
+
+		if(game.getState() == 2 && game.switchPlayer() == 1)
+			playerWon = true;
+		else if(game.getState() == 2 && game.switchPlayer() == 2)
+			aIWon = true;
+
 	}
 
 	public Board(Dialog dialog,int mode){
@@ -153,20 +170,25 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			repaint();
 			t = null;
    			
-   			int state = game.getState();
-   			checkState();
+   			if(game.getState() == 2 && game.switchPlayer() == 1)
+   				playerWon = true;
+   			if(game.getState() == 2 && game.switchPlayer() == 2)
+   				aIWon = true;
    			
-   			if (AIMode != 0 && isAIMove == false && state == 0){
-				isAIMove = true;
-				int AIMove = AI.decideMove(game);
-				if(game.checkValidMove(AIMove))
-					game.makeMove(AIMove);
-				else
-					System.out.println("You've made an invalid move at\nCol: " + AIMove);
-				repaint();
-				isAIMove = false;
+   			if (AIMode != 0 && isAIMove == false && !playerWon){
+   				new Thread(new Runnable() {
+   					public void run(){
+						isAIMove = true;
+						col = AI.decideMove(game);
+						prepareAnimation();
+						t.start();					
+					}
+   				}).start();
 			}
-
+			
+			if(isAIMove == true)
+				isAIMove = false;
+			
 			checkState();
    		}
 	}

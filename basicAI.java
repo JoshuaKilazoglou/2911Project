@@ -5,8 +5,7 @@ public class basicAI implements AI{
 		
 		int move = 0;
 		
-		
-		
+
 		return move;
 	}
 	
