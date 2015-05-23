@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
 	Game game;
-	basicAI AI = null;
+	basicAI AI = null; // change basicAI to something your trying to test
 	Image img;
 	Dialog dialog;
 	
@@ -27,6 +27,19 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
+
+	public Board(Dialog dialog,int mode){
+		game = new Game();
+		this.dialog = dialog;
+		this.AIMode = mode;
+		if(mode != 0)
+			this.AI = new basicAI(); // for testing, change the AI object for which ever your using
+		
+		setBackground(Color.white);
+		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
 
 	public void restartGame(){
 		game.restartGame();
@@ -75,18 +88,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			repaint();
 	}
 
-	public Board(Dialog dialog,int mode){
-		game = new Game();
-		this.dialog = dialog;
-		this.AIMode = mode;
-		if(mode != 0)
-			this.AI = new basicAI();
-		
-		setBackground(Color.white);
-		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
-		addMouseListener(this);
-		addMouseMotionListener(this);
-	}
+
 
 	public int getDisImgToBorder(){
 		int imgWidth = img.getWidth(this);
