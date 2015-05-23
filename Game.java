@@ -127,23 +127,7 @@ public class Game{
 	// returns how many checkers of "player" are connected, "direction" is the direction you want to check
 	// 0 for row, 1 for col, 2 for left diagnal, 3 for right diagnal
 	public int howManyConnect(int row,int col, int player, int direction){
-		int connected = 0;
-		switch(direction){
-			case 0: 
-				connected = board.connectRow(row,col,player);
-				break;
-			case 1:
-				connected = board.connectCol(row,col,player);
-				break;
-			case 2:
-				connected = board.connectLDiag(row,col,player);
-				break;
-			case 3:
-				connected = board.connectRDiag(row,col,player);
-				break;
-		}
-
-		return connected;
+		return board.howManyConnect(row,col,player,direction);
 	}
 
 	

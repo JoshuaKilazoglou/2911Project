@@ -183,4 +183,25 @@ public class Connect4Board{
 
 		return false;
 	}
+
+	public int howManyConnect(int row,int col, int player, int direction){
+		int connected = 0;
+		switch(direction){
+			case 0: 
+				connected = this.connectRow(row,col,player);
+				break;
+			case 1:
+				connected = this.connectCol(row,col,player);
+				break;
+			case 2:
+				connected = this.connectLDiag(row,col,player);
+				break;
+			case 3:
+				connected = this.connectRDiag(row,col,player);
+				break;
+		}
+
+		return connected;
+	}
+
 }
