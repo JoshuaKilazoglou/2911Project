@@ -181,7 +181,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    			if(game.getState() == Game.GAMESET && game.switchPlayer() == ai)
    				aIWon = true;
    			
-   			if (AIMode != 0 && isAIMove == false && !playerWon){
+   			if (AIMode != 0 && isAIMove == false && !playerWon && game.getState() != Game.BOARDFULL){
    				new Thread(new Runnable() {
    					public void run(){
 						isAIMove = true;
