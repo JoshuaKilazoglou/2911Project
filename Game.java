@@ -1,21 +1,20 @@
 public class Game{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  
 	public static final int ROW = 6,COL = 7;
+	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
+
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Connect4Board board;
 	private node lastmove; // undo redo element
 	private int state; // 0 for normal state, 2 for someone won
 
 	Game(){
-		player = 1;
-		state = 0;
+		player = P1;
+		state = NAD;
 		board = new Connect4Board(ROW,COL);
 		lastmove = new node(); // undo redo element
 	}
 
-	public void setGameState(int x){
-		state = x;
-	}
 	// returns the available row to input. e.g. if the 1st row has no checker return this row
 	public int top(int x){
 		int i = 0;
@@ -38,9 +37,9 @@ public class Game{
 	// restarts the game by setting everything to start state
 	public void restartGame(){
 		board.clearBoard();
-		state = 0;
+		state = NAD;
 		lastmove = new node(); // we might want to clear the record for the actual undo, redo
-		player = 1;
+		player = P1;
 	}
 
 	public int makeMove(int x){
@@ -48,9 +47,9 @@ public class Game{
 			int y = top(x);
 			board.addChecker(y,x,player);
 			if(win(y,x,player))
-				state = 2;
+				state = GAMESET;
 			if(board.isBoardFull())
-				state = 1;
+				state = BOARDFULL;
 
 			updateLastMove(y,x);
 			player = switchPlayer();

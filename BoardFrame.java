@@ -10,10 +10,12 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	private final static int DURATION = 5;
 	Timer t = null;
-	Timer t2 = null;
 
 	private boolean playerWon = false;
 	private boolean aIWon = false;
+
+	private int player = Game.P1;
+	private int ai = Game.P2;
 
 	private boolean isFalling = false; // is a checker falling
 	private int fallingRow = 0,fallSpeed = 12,terminate = 0;
@@ -23,8 +25,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	private boolean isAIMove = false;
 	private int AIMode = 0;
 
-	final static int ROW = 6;
-	final static int COL = 7;
+	final static int ROW = Game.ROW;
+	final static int COL = Game.COL;
 
 	public void restartGame(){
 		game.restartGame();
@@ -38,16 +40,17 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		if(isAIMove)
 			return;
 
-		if(playerWon){
-			if(game.undo())
-				repaint();
-			playerWon = false;
-			System.out.println();
-		} else if(AIMode != 0) {
-			if(game.undo()) 
-				repaint();
-			if(game.undo())
-				repaint();
+		if(AIMode != 0) {
+			if(playerWon){
+				if(game.undo())
+					repaint();
+				playerWon = false;
+			} else {
+				if(game.undo()) 
+					repaint();
+				if(game.undo())
+					repaint();
+			}
 		} else if(game.undo())
 			repaint();
 	}
@@ -61,14 +64,15 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 				repaint();
 			if(game.redo())
 				repaint();
+
+			if(game.getState() == Game.GAMESET)
+				if(game.switchPlayer() == player)
+					playerWon = true;
+				else
+					aIWon = true;
+		
 		} else if(game.redo())
 			repaint();
-
-		if(game.getState() == 2 && game.switchPlayer() == 1)
-			playerWon = true;
-		else if(game.getState() == 2 && game.switchPlayer() == 2)
-			aIWon = true;
-
 	}
 
 	public Board(Dialog dialog,int mode){
@@ -104,13 +108,13 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		if(isFalling){
-			g2d.setColor((game.getCurrentPlayer()==1)?Color.RED:Color.YELLOW);
+			g2d.setColor((game.getCurrentPlayer()==Game.P1)?Color.RED:Color.YELLOW);
 			g2d.fillOval(fallingCol,fallingRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 		}
 
 		if(cursorCol != -1){
 			int cursorRow = y-Connect4Board.CRADUIS*2;
-			g2d.setColor((game.getCurrentPlayer()==1)?Color.RED:Color.YELLOW);
+			g2d.setColor((game.getCurrentPlayer()==Game.P1)?Color.RED:Color.YELLOW);
 			g2d.fillOval(cursorCol-Connect4Board.CRADUIS,cursorRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);	
 		}
 		
@@ -119,8 +123,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			for(int j = 0; j < COL; j++){
 				int col = Game.getX(j);
 				int row = Game.getY(ROW-1-i);
-				if(game.whatsHere(i,j) != 0){
-					g2d.setColor((game.whatsHere(i,j) == 1)? Color.RED:Color.YELLOW);
+				if(game.whatsHere(i,j) != Game.NOP){
+					g2d.setColor((game.whatsHere(i,j) == Game.P1)? Color.RED:Color.YELLOW);
 					g2d.fillOval(x+col,y+row,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 				}
 				g2d.setColor(Color.BLACK);
@@ -148,11 +152,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	}
 
 	public void checkState(){
-		if (game.getState() == 2){
+		if (game.getState() == Game.GAMESET){
    			dialog.setTitle("Player " + game.switchPlayer() + " Win");
 			dialog.setModal(true);
 			dialog.setVisible(true);
-		} else if (game.getState() == 1){
+		} else if (game.getState() == Game.BOARDFULL){
    			dialog.setTitle("The Board is full");
 			dialog.setModal(true);
 			dialog.setVisible(true);
@@ -170,9 +174,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			repaint();
 			t = null;
    			
-   			if(game.getState() == 2 && game.switchPlayer() == 1)
+   			if(game.getState() == Game.GAMESET && game.switchPlayer() == player)
    				playerWon = true;
-   			if(game.getState() == 2 && game.switchPlayer() == 2)
+   			if(game.getState() == Game.GAMESET && game.switchPlayer() == ai)
    				aIWon = true;
    			
    			if (AIMode != 0 && isAIMove == false && !playerWon){
