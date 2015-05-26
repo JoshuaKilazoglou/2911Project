@@ -55,7 +55,7 @@ class move extends node{
 }
 
 public class DumbAI implements AI{
-	final static int MAX_DEPTH = 3;
+	final static int MAX_DEPTH = 5;
 	final static int MAGIC_NUMBER = 5;
 	final static int ALL_DIRECTION = 4;
 	static final int WINNING_SCORE = 1000; //probably worth changing at some point
