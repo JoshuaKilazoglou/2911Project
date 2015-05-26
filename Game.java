@@ -2,6 +2,7 @@ public class Game{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  
 	public static final int ROW = 6,COL = 7;
 	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
+	public static int LEFT = 0, RIGHT = 1;
 
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Connect4Board board;
@@ -91,10 +92,10 @@ public class Game{
 	// undo the move, the player is also changed, the checker on the board is deleted
 	// if undo success return true, if not(the player nevered player a move, the player have undoed all his move)
 	public boolean undo(){
-		if(lastmove.x() == -1)
+		if(lastmove.row() == -1)
 			return false;
 
-		board.deleteChecker(lastmove.x(),lastmove.y());
+		board.deleteChecker(lastmove.row(),lastmove.col());
 		player = switchPlayer();
 		lastmove = lastmove.prev();
 		state = lastmove.getState();
@@ -109,7 +110,7 @@ public class Game{
 			return false;
 
 		lastmove = lastmove.next();
-		board.addChecker(lastmove.x(),lastmove.y(),player);
+		board.addChecker(lastmove.row(),lastmove.col(),player);
 		state = lastmove.getState();
 		player = switchPlayer();
 		return true;
@@ -127,9 +128,18 @@ public class Game{
 	// returns how many checkers of "player" are connected, "direction" is the direction you want to check
 	// 0 for row, 1 for col, 2 for left diagnal, 3 for right diagnal
 	public int howManyConnect(int row,int col, int player, int direction){
+		if(row >= ROW || col >= COL)
+			return 0;
+
 		return board.howManyConnect(row,col,player,direction);
 	}
 
+	public int howManyConnectOneSide(int row,int col,int player, int direction, int side){
+		if(row >= ROW || col >= COL)
+			return 0;
+
+		return board.howManyConnectOneSide(row,col,player,direction,side);
+	}
 	
 	// get UI column axis in pixel without margin to the side of the window
 	public static int getX(int x){
@@ -154,7 +164,7 @@ public class Game{
 	}
 	
 	public node getLastMove(){
-		if(lastmove.x() == -1)
+		if(lastmove.row() == -1)
 			return null;
 		return lastmove;
 	}
@@ -172,7 +182,7 @@ public class Game{
 		Connect4Board bd = g.getBoard();
 		for(int i = 0; i < ROW; i++)
 			for(int j = 0; j < COL; j++)
-				bd.addChecker(i, j, g.whatsHere(i, j));
+				bd.addChecker(i, j, this.whatsHere(i, j));
 		g.setPlayer(this.player);
 		g.setState(this.state);
 		return g;
