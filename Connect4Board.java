@@ -156,6 +156,127 @@ public class Connect4Board{
 		return count;
 	}
 
+	public int connectRowSide(int x,int y,int player, int side){
+		boolean sideA = false,sideB = false;
+		int count = 1;
+
+		if(side == 0)
+			sideB = true;
+		else
+			sideA = true;
+
+		for(int i = 1; sideA || sideB; i++){
+			if(sideA)
+			 	if(y+i >= Y)
+			 		sideA = false;
+				else if(whatsHere(x,y+i) == player)
+					count++;
+				else
+					sideA = false;
+
+			if(sideB)
+				if(y-i < 0)
+					sideB = false;
+				else if(whatsHere(x,y-i) == player)
+					count++;
+				else
+					sideB = false;
+		}
+
+		return count;
+	}
+
+	public int connectColSide(int x,int y,int player, int side){
+		boolean sideA = false,sideB = false;
+		int count = 1;
+
+		if(side == 0)
+			sideB = true;
+		else
+			sideA = true;
+		
+		for(int i = 1; sideA || sideB; i++){
+			if(sideA)
+				if(x+i >= X)
+					sideA = false;
+				else if(whatsHere(x+i,y) == player)
+					count++;
+				else
+					sideA = false;
+
+			if(sideB)
+				if(x-i < 0)
+					sideB = false;
+				else if(whatsHere(x-i,y) == player)
+					count++;
+				else
+					sideB = false;
+		}
+
+		return count;
+	}
+
+	public int connectLDiagSide(int x,int y,int player,int side){
+		boolean sideA = false,sideB = false;
+		int count = 1;
+
+		if(side == 0)
+			sideB = true;
+		else
+			sideA = true;
+		
+		for(int i = 1; sideA || sideB; i++){
+			if(sideA)
+				if (x+i >= X || y-i < 0)
+					sideA = false;
+				else if(whatsHere(x+i,y-i) == player)
+					count++;
+				else
+					sideA = false;
+
+			if(sideB)
+				if(x-i < 0 || y+i >= Y)
+					sideB = false;
+				else if(whatsHere(x-i,y+i) == player)
+					count++;
+				else
+					sideB = false;
+		}
+
+		return count;
+	}
+
+	public int connectRDiagSide(int x,int y,int player,int side){
+		boolean sideA = false,sideB = false;
+		int count = 1;
+
+		if(side == 0)
+			sideB = true;
+		else
+			sideA = true;
+		
+
+		for(int i = 1; sideA || sideB; i++){
+			if(sideA)
+				if (x+i >= X || y+i >= Y)
+					sideA = false;
+				else if(whatsHere(x+i,y+i) == player)
+					count++;
+				else
+					sideA = false;
+
+			if(sideB)
+				if(x-i < 0 || y-i < 0)
+					sideB = false;
+				else if(whatsHere(x-i,y-i) == player)
+					count++;
+				else
+					sideB = false;
+		}
+
+		return count;
+	}
+
 	public boolean rowCheck(int x,int y, int player){
 		if(connectRow(x,y,player) >= 4)
 			return true;
@@ -198,6 +319,27 @@ public class Connect4Board{
 				break;
 			case 3:
 				connected = this.connectRDiag(row,col,player);
+				break;
+		}
+
+		return connected;
+	}
+
+
+	public int howManyConnectOneSide(int row,int col, int player, int direction, int side){
+		int connected = 0;
+		switch(direction){
+			case 0: 
+				connected = this.connectRowSide(row,col,player,side);
+				break;
+			case 1:
+				connected = this.connectColSide(row,col,player,side);
+				break;
+			case 2:
+				connected = this.connectLDiagSide(row,col,player,side);
+				break;
+			case 3:
+				connected = this.connectRDiagSide(row,col,player,side);
 				break;
 		}
 

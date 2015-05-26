@@ -96,7 +96,6 @@ public class DumbAI implements AI{
 
 		while(!pq.isEmpty() && initialDepth < maxDepth){
 			move bestMove = pq.poll();
-			System.out.println("The bestMove is\n Col: " + bestMove.col() + "\n Depth: " + bestMove.getDepth() + "\n Heu: " + bestMove.getHue());
 			
 			if(initialDepth < bestMove.getDepth())
 				initialDepth = bestMove.getDepth();
@@ -128,11 +127,41 @@ public class DumbAI implements AI{
 		return bestMove.getHead(bestMove).col();
 	}
 
+	public int marginCol(int col,int direction,int margin,int side){
+		switch(direction){
+			case 0: return col;
+			case 1: 
+			case 2:
+				return (side == Game.LEFT ? col-margin : col+margin);
+			case 3:
+				return (side == Game.LEFT ? col+margin : col-margin);
+			}
+		return 0;
+	}
+
+
+	public int marginRow(int row,int direction,int margin,int side){
+		switch(direction){
+			case 0: 
+			case 2:
+			case 3:
+				return (side == Game.LEFT ? row+margin : row-margin);
+			case 1:
+				return row;
+		}
+		return 0;
+	}
+
 	public int eval(Game g, int col){
-		int row = g.top(col),score = 0,maxConnect = 0;
+		int row = g.top(col),score = 0,maxConnect = 0, maxDir = 0;
 		int player = g.getCurrentPlayer(), opponent = g.switchPlayer();
-		for(int direction = 0; direction < ALL_DIRECTION; direction++) 
-			maxConnect = Math.max(g.howManyConnect(row,col, player, direction), maxConnect);
+		for(int direction = 0; direction < ALL_DIRECTION; direction++){
+			int moveScore = g.howManyConnect(row,col, player, direction);
+			if(moveScore > maxConnect){
+				maxConnect = moveScore;
+				maxDir = direction;
+			}
+		}
 		
 		switch (maxConnect) { //assign scores (tentative values)
 			case 0: score = 0; 		break; //shouldnt occur
@@ -142,6 +171,22 @@ public class DumbAI implements AI{
 			case 4: score = WINNING_SCORE; break; //4 in a row i.e. win
 		}
 
+		if(maxConnect == 3){
+			int leftConnect = g.howManyConnectOneSide(row,col,player,maxDir,Game.LEFT);
+			int rightConnect = g.howManyConnectOneSide(row,col,player,maxDir,Game.LEFT);
+			int leftBoundCol = marginCol(col,leftConnect,maxDir,Game.LEFT);
+			int rightBoundCol = marginCol(col,leftConnect,maxDir,Game.RIGHT);
+			int leftBoundRow = marginRow(row,leftConnect,maxDir,Game.LEFT);
+			int rightBoundRow = marginRow(row,leftConnect,maxDir,Game.RIGHT);
+
+			System.out.println("When Col is " + col + ", leftBoundCol is " + leftBoundCol);
+			if((leftBoundRow >= Game.ROW || leftBoundCol >= Game.COL || g.whatsHere(leftBoundRow,leftBoundCol) == opponent)
+				&& 
+				(rightBoundRow >= Game.ROW || rightBoundCol >= Game.COL || g.whatsHere(rightBoundRow,rightBoundCol) == opponent)){
+				score -= 200;
+			}
+
+		}
 		for(int direction = 0; direction < ALL_DIRECTION; direction++) 
 			maxConnect = Math.max(g.howManyConnect(row,col, opponent, direction), maxConnect);
 		

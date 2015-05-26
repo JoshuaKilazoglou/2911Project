@@ -2,6 +2,7 @@ public class Game{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  
 	public static final int ROW = 6,COL = 7;
 	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
+	public static int LEFT = 0, RIGHT = 1;
 
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Connect4Board board;
@@ -133,6 +134,12 @@ public class Game{
 		return board.howManyConnect(row,col,player,direction);
 	}
 
+	public int howManyConnectOneSide(int row,int col,int player, int direction, int side){
+		if(row >= ROW || col >= COL)
+			return 0;
+
+		return board.howManyConnectOneSide(row,col,player,direction,side);
+	}
 	
 	// get UI column axis in pixel without margin to the side of the window
 	public static int getX(int x){
