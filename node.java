@@ -25,11 +25,11 @@ public class node implements Cloneable{
 		next.prev = this;
 	}
 	
-	public int x(){ 
+	public int row(){ 
 		return this.x;
 	}
 	
-	public int y(){
+	public int col(){
 		return this.y;
 	}
 	
