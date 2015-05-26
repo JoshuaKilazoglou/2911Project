@@ -8,7 +8,7 @@ public class Game{
 	private Connect4Board board;
 	private node lastmove; // undo redo element
 	private int state; // 0 for normal state, 2 for someone won
-
+	
 	Game(){
 		player = P1;
 		state = NAD;
@@ -195,5 +195,12 @@ public class Game{
 				if(this.board.whatsHere(i, j) != ((Game) o).whatsHere(i,j))
 					return false;
 		return true;
+	}
+
+	public node getHint() {		
+		AI ai= new DumbAI();
+		int x = ai.decideMove(this);
+		node n = new node(top(x),x,null,null);
+		return n;
 	}
 }
