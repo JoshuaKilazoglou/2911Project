@@ -158,4 +158,23 @@ public class Game{
 			return null;
 		return lastmove;
 	}
+	
+	public void setPlayer(int player){
+		this.player = player;
+	}
+	
+	public void setState(int state){
+		this.state = state;
+	}
+	
+	public Game clone(){
+		Game g = new Game();
+		Connect4Board bd = g.getBoard();
+		for(int i = 0; i < ROW; i++)
+			for(int j = 0; j < COL; j++)
+				bd.addChecker(i, j, g.whatsHere(i, j));
+		g.setPlayer(this.player);
+		g.setState(this.state);
+		return g;
+	}
 }
