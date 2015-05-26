@@ -18,13 +18,14 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	private int ai = Game.P2;
 
 	private boolean isFalling = false; // is a checker falling
-	private int fallingRow = 0,fallSpeed = 12,terminate = 0;
+	private int fallingRow = 0,fallSpeed = 10,terminate = 0;
 	private int fallingCol = 0,col=0;
 	
 	private int cursorCol = -1;
 	private boolean isAIMove = false;
 	private int AIMode = 0;
-
+	
+	
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
 
