@@ -28,6 +28,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
+	
+	private boolean displayHint;
 
 	public Board(Dialog dialog,int mode){
 		game = new Game();
@@ -40,6 +42,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		displayHint = false;
 	}
 
 	public void restartGame(){
@@ -48,6 +51,10 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		playerWon = false;
 		aIWon = false;
 		repaint();
+	}
+	
+	public void setDisplayHint(boolean i){
+		this.displayHint = i;
 	}
 
 	public void undo(){
@@ -144,6 +151,15 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			g2d.setStroke(new BasicStroke(5));
 			g2d.drawOval(x+lastCol, y+lastRow, Connect4Board.CRADUIS*2, Connect4Board.CRADUIS*2);
 		}
+		
+		if (displayHint){	
+			int Row = Game.getY(ROW-game.getHint().x()-1);
+			int Col = Game.getX(game.getHint().y());
+		
+			g2d.setColor(Color.pink);
+			g2d.setStroke(new BasicStroke(5));
+			g2d.drawOval(x+Col, y+Row, Connect4Board.CRADUIS*2, Connect4Board.CRADUIS*2);
+		}
 	}
 
 	public void prepareAnimation(){
@@ -205,6 +221,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
     }
 
    	public void mouseClicked(MouseEvent e) { 
+		setDisplayHint(false);
    		if(game.getState() == 2)
    			return;
    		
@@ -268,7 +285,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 
 public class BoardFrame extends JFrame{
 	private JPanel toolbar;
-	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,b1,b2,b3;
+	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,hintButton,b1,b2,b3;//the lass3 button is for dialog
 	private Board board;
 	
 	public BoardFrame(int mode){
@@ -298,18 +315,21 @@ public class BoardFrame extends JFrame{
 	public void addToolBar(){
 		toolbar = new JPanel();
 		startButton = new JButton("Restart");
+		hintButton = new JButton("Hint");
 		undoButton = new JButton("Undo");
 		redoButton = new JButton("Redo");
 		exitButton = new JButton("Exit");
 		backToMenu = new JButton("Back");
 
 		toolbar.add(startButton);
+		toolbar.add(hintButton);
 		toolbar.add(undoButton);
 		toolbar.add(redoButton);
 		toolbar.add(exitButton);
 		toolbar.add(backToMenu);
 
 		listener lis = new listener();
+		hintButton.addActionListener(lis);
 		startButton.addActionListener(lis);
 		undoButton.addActionListener(lis);
 		redoButton.addActionListener(lis);
@@ -345,6 +365,10 @@ public class BoardFrame extends JFrame{
 				current.getModePanel().setVisible(true);
 				current.getEntrancePanel().setVisible(false);
 				current.add(current.getModePanel());
+			}else if(obj == hintButton){
+				System.out.println("Hint");
+				board.setDisplayHint(true);
+				board.repaint();
 			}
 		}
 	}
