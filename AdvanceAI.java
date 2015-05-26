@@ -4,8 +4,8 @@ public class AdvanceAI implements AI{
 	AdvanceAI(){
 		result = new int [7];
 	}
-	
-	
+
+
 	public int decideMove(Game g) {
 		result = new int[7];
 		evaluateMoves(g);
@@ -27,13 +27,21 @@ public class AdvanceAI implements AI{
 			//if the move is valid than...do
 			int top = g.top(i);
 			//eval of advantage gained
-			result[i] += rowEval(g,i) + colEval(g,i) + LdiagEval(g,i)+RdiagEval(g,i);
-			//result[i] += dRowEval(g,i) + dCowEval(g,i) + dLdiagEval(g,i)+dRdiagEval(g,i);
+			int playerCurrent = g.getCurrentPlayer();
+			int opponent = g.switchPlayer();
+			result[i] += rowEval(g,i,playerCurrent) + colEval(g,i,playerCurrent) 
+					+ LdiagEval(g,i,playerCurrent)+RdiagEval(g,i,playerCurrent)
+					+ rowEval(g,i,opponent) + colEval(g,i,opponent) 
+					+ LdiagEval(g,i,opponent)+RdiagEval(g,i,opponent);
 			//eval of dis
+			/*System.out.println(" row: " + rowEval(g,i,playerCurrent) + " "+rowEval(g,i,opponent));
+			System.out.println(" col: " + colEval(g,i,playerCurrent) + " "+colEval(g,i,opponent));
+			System.out.println(" Ld: " + LdiagEval(g,i,playerCurrent) + " "+LdiagEval(g,i,opponent));
+			System.out.println(" Rd: " + RdiagEval(g,i,playerCurrent) + " "+RdiagEval(g,i,opponent));*/
 			System.out.println(result[i]);
 		}
 	}
-	private int rowEval(Game g, int y) {
+	private int rowEval(Game g, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
 		int x = g.top(y);
@@ -41,14 +49,14 @@ public class AdvanceAI implements AI{
 		int countR = 1;
 		//System.out.println(x+" "+y);
 		for(int i = 1; sideA || sideB; i++){
-			
+
 			if(sideA){
-				
+
 				if(y+i >= g.COL){
 					sideA = false;
 				}else if (countR == 4){
 					sideA = false;
-				}else if(g.whatsHere(x,y+i) == g.getCurrentPlayer()||g.whatsHere(x,y+i) == g.NOP ){
+				}else if(g.whatsHere(x,y+i) == player||g.whatsHere(x,y+i) == g.NOP ){
 					countR++;
 				}else{
 					sideA = false;
@@ -59,7 +67,7 @@ public class AdvanceAI implements AI{
 					sideB = false;
 				}else if (countL == 4){
 					sideB = false;
-				}else if(g.whatsHere(x,y-i) == g.getCurrentPlayer()||g.whatsHere(x,y-i) == g.NOP){
+				}else if(g.whatsHere(x,y-i) == player||g.whatsHere(x,y-i) == g.NOP){
 					countL++;
 				}else{
 					sideB = false;
@@ -72,7 +80,7 @@ public class AdvanceAI implements AI{
 		}
 		return count;
 	}
-	private int colEval(Game g, int y) {
+	private int colEval(Game g, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
 		int x = g.top(y);
@@ -80,14 +88,14 @@ public class AdvanceAI implements AI{
 		int countD = 1;
 		//System.out.println(x+" "+y);
 		for(int i = 1; sideA || sideB; i++){
-			
+
 			if(sideA){
-				
+
 				if(x+i >= g.ROW){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
-				}else if(g.whatsHere(x+i,y) == g.getCurrentPlayer()||g.whatsHere(x+i,y) == g.NOP ){
+				}else if(g.whatsHere(x+i,y) == player||g.whatsHere(x+i,y) == g.NOP ){
 					countU++;
 				}else{
 					sideA = false;
@@ -98,7 +106,7 @@ public class AdvanceAI implements AI{
 					sideB = false;
 				}else if (countD == 4){
 					sideB = false;
-				}else if(g.whatsHere(x-i,y) == g.getCurrentPlayer()||g.whatsHere(x-i,y) == g.NOP){
+				}else if(g.whatsHere(x-i,y) == player||g.whatsHere(x-i,y) == g.NOP){
 					countD++;
 				}else{
 					sideB = false;
@@ -111,7 +119,7 @@ public class AdvanceAI implements AI{
 		}
 		return count;
 	}
-	private int LdiagEval(Game g, int y) {
+	private int LdiagEval(Game g, int y, int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
 		int x = g.top(y);
@@ -119,14 +127,14 @@ public class AdvanceAI implements AI{
 		int countD = 1;
 		//System.out.println(x+" "+y);
 		for(int i = 1; sideA || sideB; i++){
-			
+
 			if(sideA){
-				
+
 				if(x+i >= g.ROW || y-i < 0){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
-				}else if(g.whatsHere(x+i,y-i) == g.getCurrentPlayer()||g.whatsHere(x+i,y-i) == g.NOP ){
+				}else if(g.whatsHere(x+i,y-i) == player||g.whatsHere(x+i,y-i) == g.NOP ){
 					countU++;
 				}else{
 					sideA = false;
@@ -137,7 +145,7 @@ public class AdvanceAI implements AI{
 					sideB = false;
 				}else if (countD == 4){
 					sideB = false;
-				}else if(g.whatsHere(x-i,y+i) == g.getCurrentPlayer()||g.whatsHere(x-i,y+i) == g.NOP){
+				}else if(g.whatsHere(x-i,y+i) == player||g.whatsHere(x-i,y+i) == g.NOP){
 					countD++;
 				}else{
 					sideB = false;
@@ -150,8 +158,7 @@ public class AdvanceAI implements AI{
 		}
 		return count;
 	}
-	
-	private int RdiagEval(Game g, int y) {
+	private int RdiagEval(Game g, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
 		int x = g.top(y);
@@ -159,14 +166,14 @@ public class AdvanceAI implements AI{
 		int countD = 1;
 		//System.out.println(x+" "+y);
 		for(int i = 1; sideA || sideB; i++){
-			
+
 			if(sideA){
-				
+
 				if(x+i >= g.ROW || y+i >= g.COL){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
-				}else if(g.whatsHere(x+i,y+i) == g.getCurrentPlayer()||g.whatsHere(x+i,y+i) == g.NOP ){
+				}else if(g.whatsHere(x+i,y+i) == player||g.whatsHere(x+i,y+i) == g.NOP ){
 					countU++;
 				}else{
 					sideA = false;
@@ -177,7 +184,7 @@ public class AdvanceAI implements AI{
 					sideB = false;
 				}else if (countD == 4){
 					sideB = false;
-				}else if(g.whatsHere(x-i,y-i) == g.getCurrentPlayer()||g.whatsHere(x-i,y-i) == g.NOP){
+				}else if(g.whatsHere(x-i,y-i) == player||g.whatsHere(x-i,y-i) == g.NOP){
 					countD++;
 				}else{
 					sideB = false;
@@ -190,5 +197,5 @@ public class AdvanceAI implements AI{
 		}
 		return count;
 	}
-	
+
 }

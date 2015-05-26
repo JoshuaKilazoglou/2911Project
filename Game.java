@@ -178,37 +178,12 @@ public class Game{
 		return g;
 	}
 	
-	/*public int stepsToWin(int steps,int player){
-		final int rowBeginMax = 4;
-		final int maxSteps = 4;
-		final int traverseNum = 4;
-		final int colBeginMax = 3;
-		int result = 0;
-		for (int y = 0; y < COL;y++){
-			for (int x = 0; x < rowBeginMax;x++){
-				int temp = 0;
-				for (int k= 0; k < traverseNum; k++){
-					if (board.whatsHere(x, y) == player){
-						temp++;
-					}
-				}
-				if (maxSteps - temp == steps){
-					result++;
-				}
-			}	
-		}
-		
-		for (int y = 0; y < COL; y++){
-			int temp = 0;
-			for (int x = 0; x < ROW;x++){
-				if (board.whatsHere(x, y) == player){
-					if (x < colBeginMax){
-						
-					}
-				}
-			}
-		}
-		
-		return result;
-	}*/
+	@Override
+	public boolean equals(Object o){		
+		for(int i = 0; i < ROW; i++)
+			for(int j = 0; j < COL; j++)
+				if(this.board.whatsHere(i, j) != ((Game) o).whatsHere(i,j))
+					return false;
+		return true;
+	}
 }
