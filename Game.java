@@ -177,4 +177,13 @@ public class Game{
 		g.setState(this.state);
 		return g;
 	}
+	
+	@Override
+	public boolean equals(Object o){		
+		for(int i = 0; i < ROW; i++)
+			for(int j = 0; j < COL; j++)
+				if(this.board.whatsHere(i, j) != ((Game) o).whatsHere(i,j))
+					return false;
+		return true;
+	}
 }
