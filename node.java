@@ -1,4 +1,4 @@
-public class node {
+public class node implements Cloneable{
 	private int x,y,gameState=0;
 	private node prev,next;
 	
@@ -49,12 +49,33 @@ public class node {
 			System.out.println("x: " + temp.x + ", y: " + temp.y);
 	}
 
-	public void printPrev(node prev){
+	/*public int steps(node prev){
 		if(prev == null)
-			return;
+			return 1;
 		else
-			printPrev(prev.prev);
-
-		System.out.println("x: " + prev.x + ", y: " + prev.y);		
+			return steps(prev.prev)+1;
+	}
+	
+	public getFirstNode(){
+		if(prev == null)
+			return 1;
+		else
+			return steps(prev.prev)+1;
+		
+	}*/
+	
+	public node clone(){
+		node newNode = null;
+		try {
+			newNode = (node) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (newNode != null){
+			newNode.attach(newNode.next().clone());
+		}
+		return newNode;
+		
 	}
 }
