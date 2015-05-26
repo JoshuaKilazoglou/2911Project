@@ -197,9 +197,8 @@ public class Game{
 		return true;
 	}
 
-	//please implement this
 	public node getHint() {		
-		AI ai= new AdvanceAI();
+		AI ai= new DumbAI();
 		int x = ai.decideMove(this);
 		node n = new node(top(x),x,null,null);
 		return n;

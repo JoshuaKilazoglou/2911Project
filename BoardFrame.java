@@ -36,7 +36,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		this.dialog = dialog;
 		this.AIMode = mode;
 		if(mode != 0)
-			this.AI = new DumbAI(); // for testing, change the AI object for which ever your using
+			this.AI = new AdvanceAI(); // for testing, change the AI object for which ever your using
 		
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
@@ -153,8 +153,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		}
 		
 		if (displayHint){	
-			int Row = Game.getY(ROW-game.getHint().x()-1);
-			int Col = Game.getX(game.getHint().y());
+			int Row = Game.getY(ROW-game.getHint().row()-1);
+			int Col = Game.getX(game.getHint().col());
 		
 			g2d.setColor(Color.pink);
 			g2d.setStroke(new BasicStroke(5));
