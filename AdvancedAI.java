@@ -1,15 +1,15 @@
 import java.util.PriorityQueue;
 
-class move extends node{
+/*class move extends node{
 	int depth = 0;
 	
-}
+}*/
 
 public class AdvancedAI implements AI{
 
 	@Override
 	public int decideMove(Game currentBoard) {
-		final int choices= 7;
+		/*final int choices= 7;
 		int judgeMove = 3;
 		Game g = currentBoard.clone();
 		PriorityQueue<node> q = new PriorityQueue<node>(10,comparator);
@@ -24,7 +24,7 @@ public class AdvancedAI implements AI{
 				copy.attach(new node(0,i,null,null));
 			}
 			judgeMove--;
-		}
+		}*/
 		
 		return 0;
 	}

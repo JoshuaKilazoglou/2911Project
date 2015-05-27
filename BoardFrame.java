@@ -241,6 +241,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    		if(!game.checkValidMove(col))
    			return;
    		
+   		game.generateHint();
 		prepareAnimation();
 		t.start();
 		/*

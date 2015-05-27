@@ -8,6 +8,7 @@ public class Game{
 	private Connect4Board board;
 	private node lastmove; // undo redo element
 	private int state; // 0 for normal state, 2 for someone won
+	private node hint;
 	
 	Game(){
 		player = P1;
@@ -197,10 +198,14 @@ public class Game{
 		return true;
 	}
 
-	public node getHint() {		
+	public void generateHint() {		
 		AI ai= new DumbAI();
 		int x = ai.decideMove(this);
 		node n = new node(top(x),x,null,null);
-		return n;
+		this.hint =n;
+	}
+	
+	public node getHint(){
+		return this.hint;
 	}
 }
