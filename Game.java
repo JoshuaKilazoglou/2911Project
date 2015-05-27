@@ -84,7 +84,7 @@ public class Game{
 	}
 
 	// check if a checker inserted in row x, col y by player would win the game
-	private boolean win(int x, int y, int player) {
+	public boolean win(int x, int y, int player) {
 		return board.rowCheck(x,y,player) || board.colCheck(x,y,player) || board.LdiagCheck(x,y,player) || board.RdiagCheck(x,y,player);
 	}
 
