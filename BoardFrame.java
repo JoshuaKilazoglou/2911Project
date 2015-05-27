@@ -10,7 +10,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	AI AI = null; // change basicAI to something your trying to test
 	Image img;
 	Dialog dialog;
-	
+	JLabel wait;
 	private final static int DURATION = 5;
 	Timer t = null;
 
@@ -58,6 +58,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	public void setDisplayHint(boolean i){
 		this.displayHint = i;
+	}
+
+	public void setWaitLabel(JLabel wait){
+		this.wait = wait;
+		wait.setVisible(false);
 	}
 
 	public void undo(){
@@ -302,7 +307,7 @@ public class BoardFrame extends JFrame{
 	private JPanel toolbar;
 	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,hintButton,b1,b2,b3;//the lass3 button is for dialog
 	private Board board;
-	
+	private JLabel wait;
 	/**
 	 * Constructor for the frame of the game board
 	 * postCondtion:Creat an instance of the BoardFrame for users to operate
@@ -314,6 +319,7 @@ public class BoardFrame extends JFrame{
 		board = new Board(dialog,mode);
 		add(board);
 		addToolBar();
+		board.setWaitLabel(wait);
 		board.setOpaque(true);
 		setSize(680,630);
 		setLocationRelativeTo(null);
@@ -348,6 +354,7 @@ public class BoardFrame extends JFrame{
 		redoButton = new JButton("Redo");
 		exitButton = new JButton("Exit");
 		backToMenu = new JButton("Back");
+		wait = new JLabel("Ai is thinking...",JLabel.CENTER);
 
 		toolbar.add(startButton);
 		toolbar.add(hintButton);
@@ -355,6 +362,7 @@ public class BoardFrame extends JFrame{
 		toolbar.add(redoButton);
 		toolbar.add(exitButton);
 		toolbar.add(backToMenu);
+		toolbar.add(wait);
 
 		listener lis = new listener();
 		hintButton.addActionListener(lis);
