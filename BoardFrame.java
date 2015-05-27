@@ -36,7 +36,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		this.dialog = dialog;
 		this.AIMode = mode;
 		if(mode != 0)
-			this.AI = new AdvanceAI(); // for testing, change the AI object for which ever your using
+			this.AI = new DumbAI(); // for testing, change the AI object for which ever your using
 		
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));

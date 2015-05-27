@@ -55,7 +55,7 @@ class move extends node{
 }
 
 public class DumbAI implements AI{
-	final static int MAX_DEPTH = 5;
+	final static int MAX_DEPTH = 3;
 	final static int MAGIC_NUMBER = 5;
 	final static int ALL_DIRECTION = 4;
 	static final int WINNING_SCORE = 1000; //probably worth changing at some point
@@ -65,8 +65,8 @@ public class DumbAI implements AI{
 	private class comparator implements Comparator<move>{
 		@Override
 		public int compare(move a,move b){
-//			if(a.getDepth() != b.getDepth())
-//				return a.getDepth() - b.getDepth();
+			if(a.getDepth() != b.getDepth())
+				return a.getDepth() - b.getDepth();
 			
 			return b.getHue() - a.getHue();
 		}
@@ -97,12 +97,9 @@ public class DumbAI implements AI{
 		if(maxDepth == 0)
 			return pq.poll();
 
-		while(!pq.isEmpty() && initialDepth < maxDepth){
+		while(!pq.isEmpty() && pq.peek().getDepth() < maxDepth){
 			move bestMove = pq.poll();
 			
-			if(initialDepth < bestMove.getDepth())
-				initialDepth = bestMove.getDepth();
-
 			for(int col = 0; col < Game.COL; col++){	
 				Game copy = currentBoard.clone();
 				reFill(copy,bestMove);
