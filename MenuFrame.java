@@ -16,7 +16,11 @@ import javax.swing.JPanel;
 
 import java.awt.*;
 import javax.swing.*;
-
+/**
+ * Public class of the Frame of the menu
+ * @author Alan
+ *		extends JFrame
+ */
 public class MenuFrame extends JFrame {
 	private MenuFrame thisClass = this;
 	private BoardFrame boardFrame;
@@ -28,6 +32,10 @@ public class MenuFrame extends JFrame {
 			backToMenuButton2;
 	private AbstractAction specialListener;//this is for back to Menu
 
+	/**
+	 * Constructor of the class
+	 * Postcondtion:creat an instance of the class
+	 */
 	public MenuFrame() {
 		super("Menu");
 		
@@ -54,6 +62,10 @@ public class MenuFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	/**
+	 * Private method for building one of the panels to be switched in MenuFrame. This is the EntrancPanel
+	 * Postcondition:An initialized instance of Entrance Panel is built and put in the field of entrance
+	 */
 	private void buildEntrancePanel() {
 		entrance = new JPanel();
 		entrance.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
@@ -74,6 +86,10 @@ public class MenuFrame extends JFrame {
 		add(entrance);
 	}
 
+	/**
+	 * Private method for building one of the panels to be switched in MenuFrame. This is the ModePanel
+	 * Postcondition:An initialized instance of ModePanel is built and put in the field of mode
+	 */
 	private void buildModePanel() {
 		mode = new JPanel();
 		mode.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
@@ -96,6 +112,11 @@ public class MenuFrame extends JFrame {
 		mode.add(exitButton1);
 	}
 
+	
+	/**
+	 * Private method for building one of the panels to be switched in MenuFrame. This is the AIPanel
+	 * Postcondition:An initialized instance of AIPanel is built and put in the field of AI
+	 */
 	private void buildAIPanel() {
 		AI = new JPanel();
 		AI.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
@@ -122,6 +143,11 @@ public class MenuFrame extends JFrame {
 		AI.add(exitButton2);
 	}
 
+	/**
+	 * A general private Listener class that deals with the Buttons in the EntrancePanel
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class ListenerForEntrance implements ActionListener {
 
 		@Override
@@ -142,6 +168,11 @@ public class MenuFrame extends JFrame {
 		}
 	}
 	
+	/**
+	 * A general private Listener class that deals with the Buttons in the ModePanel
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class ListenerForMode implements ActionListener {
 
 		@Override
@@ -168,6 +199,11 @@ public class MenuFrame extends JFrame {
 	}
 
 
+	/**
+	 * A general private Listener class that deals with the Buttons in the AIPanel
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class ListenerForAI implements ActionListener {
 
 		@Override
@@ -201,10 +237,18 @@ public class MenuFrame extends JFrame {
 		}
 	}
 	
+	/**
+	 * Getting the EntrancePanel
+	 * @return JPanel
+	 */
 	public JPanel getEntrancePanel(){
 		return entrance;
 	}
 	
+	/**
+	 * Getting the ModePanel
+	 * @return JPanel
+	 */
 	public JPanel getModePanel(){
 		return mode;
 	}

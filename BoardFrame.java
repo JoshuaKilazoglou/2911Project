@@ -1,7 +1,10 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.*;
-
+import java.util.Observable;
 class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
 	Game game;
 	AI AI = null; // change basicAI to something your trying to test
@@ -29,7 +32,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
 	
-	private boolean displayHint;
+	private boolean displayHint;	
 
 	public Board(Dialog dialog,int mode){
 		game = new Game();
@@ -110,6 +113,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		return (WinHeight-imgHeight)/2+Connect4Board.CRADUIS;
 	}
 
+	/**
+	 * Implementing the paintComponent to meet the connect4 game environment
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		int x = getDisImgToBorder(); // to keep the picture in the middle
@@ -152,7 +158,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			g2d.drawOval(x+lastCol, y+lastRow, Connect4Board.CRADUIS*2, Connect4Board.CRADUIS*2);
 		}
 		
-		if (displayHint){	
+		if (displayHint && game.isHintReady()){	
 			int Row = Game.getY(ROW-game.getHint().row()-1);
 			int Col = Game.getX(game.getHint().col());
 		
@@ -241,8 +247,6 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    			return;
    		
    		setDisplayHint(false);
-   		Thread thread = new Thread(game);
-   		thread.start();
 		prepareAnimation();
 		t.start();
 		/*
@@ -283,13 +287,27 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		
 		repaint();
 	}
-}
 
+	public Game getGame() {
+		return game;
+	}
+}
+/**
+ * The class for storing the frame of the menu
+ * 		extends JFrame
+ * @author Alan
+ *
+ */
 public class BoardFrame extends JFrame{
 	private JPanel toolbar;
 	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,hintButton,b1,b2,b3;//the lass3 button is for dialog
 	private Board board;
 	
+	/**
+	 * Constructor for the frame of the game board
+	 * postCondtion:Creat an instance of the BoardFrame for users to operate
+	 * @param mode
+	 */
 	public BoardFrame(int mode){
 		super("BoardFrame");
 		JDialog dialog = buildDialog();
@@ -303,6 +321,10 @@ public class BoardFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	/**
+	 * PostCondition:Creating the dialog to pop out when the game is finished
+	 * @return JDialog
+	 */
 	private JDialog buildDialog() {
 		JDialog dialog = new JDialog(this);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -314,6 +336,10 @@ public class BoardFrame extends JFrame{
 		return dialog;
 	}
 
+	/**
+	 * A method creating toolbar with functional buttons
+	 * PostCondition:Creating a JPanel as the game board with Buttons needed for the game board interface and add it to the frame
+	 */
 	public void addToolBar(){
 		toolbar = new JPanel();
 		startButton = new JButton("Restart");
@@ -343,11 +369,17 @@ public class BoardFrame extends JFrame{
 
 	}
 
+	/**
+	 * A general private Listener class that deals with the Buttons in the game board Panel.(See addtoolBar method)
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class listener implements ActionListener{
 	@Override
 		public void actionPerformed(ActionEvent e){
 			Object obj = e.getSource();
 			if(obj==startButton){
+				board.setDisplayHint(false);
 				System.out.println("Restart");
 				board.restartGame();
 			}else if(obj==undoButton){
@@ -374,11 +406,30 @@ public class BoardFrame extends JFrame{
 			}else if(obj == hintButton){
 				System.out.println("Hint");
 				board.setDisplayHint(true);
-				board.repaint();
+				Thread thread = new Thread(board.getGame());
+		   		thread.start();
+		   		Thread thread2 = new Thread(new Runnable(){
+					@Override
+					public void run() {
+						while (true){
+							if ((board.getGame()).isHintReady()){
+								board.repaint();
+								break;
+							}
+						}		
+					}		   			
+		   		});
+		   		thread2.start();
 			}
 		}
 	}
 	
+	/**
+	 * Adding Buttons to the game finished dialog
+	 * Precondtion:Passed in the game finished dialog into the method
+	 * Postcondition:The dialog has all the buttons it need in it
+	 * @param dialog the target dialog for the buttons to be put in
+	 */
 	private void addButtontoDialog(Dialog dialog){
 		b1 = new JButton("ReStart");
 		b2 = new JButton("Back to menu");
@@ -399,6 +450,11 @@ public class BoardFrame extends JFrame{
 		dialog.add(jpanel);
 	}
 	
+	/**
+	 * A general private Listener class that deals with the Buttons in the game finished dialog.
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class ActionListenerForDialog implements ActionListener{
 
 		@Override
