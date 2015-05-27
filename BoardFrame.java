@@ -221,7 +221,6 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
     }
 
    	public void mouseClicked(MouseEvent e) { 
-		setDisplayHint(false);
    		if(game.getState() == 2)
    			return;
    		
@@ -241,6 +240,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    		if(!game.checkValidMove(col))
    			return;
    		
+   		setDisplayHint(false);
    		game.generateHint();
 		prepareAnimation();
 		t.start();
@@ -351,10 +351,12 @@ public class BoardFrame extends JFrame{
 				board.restartGame();
 			}else if(obj==undoButton){
 				board.setDisplayHint(false);
+				repaint();
 				System.out.println("Undo");
 				board.undo();
 			}else if(obj==redoButton){
 				board.setDisplayHint(false);
+				repaint();
 				System.out.println("Redo");
 				board.redo();
 			}else if(obj==exitButton){
