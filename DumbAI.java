@@ -133,6 +133,12 @@ public class DumbAI implements AI{
 
 	@Override
 	public int decideMove(Game currentBoard){
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		comparator cmp = new comparator();
 		pq = new PriorityQueue<move>(10,cmp);
 		scores = new int[Game.COL];
