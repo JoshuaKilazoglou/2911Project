@@ -241,7 +241,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    			return;
    		
    		setDisplayHint(false);
-   		game.generateHint();
+   		Thread thread = new Thread(game);
+   		thread.start();
 		prepareAnimation();
 		t.start();
 		/*

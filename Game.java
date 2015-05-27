@@ -1,4 +1,4 @@
-public class Game{
+public class Game implements Runnable{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  
 	public static final int ROW = 6,COL = 7;
 	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
@@ -198,7 +198,7 @@ public class Game{
 		return true;
 	}
 
-	public void generateHint() {		
+	public synchronized void generateHint() {		
 		AI ai= new DumbAI();
 		int x = ai.decideMove(this);
 		node n = new node(top(x),x,null,null);
@@ -207,5 +207,10 @@ public class Game{
 	
 	public node getHint(){
 		return this.hint;
+	}
+
+	@Override
+	public void run() {
+		generateHint();
 	}
 }
