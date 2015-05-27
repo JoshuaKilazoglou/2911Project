@@ -350,9 +350,11 @@ public class BoardFrame extends JFrame{
 				System.out.println("Restart");
 				board.restartGame();
 			}else if(obj==undoButton){
+				board.setDisplayHint(false);
 				System.out.println("Undo");
 				board.undo();
 			}else if(obj==redoButton){
+				board.setDisplayHint(false);
 				System.out.println("Redo");
 				board.redo();
 			}else if(obj==exitButton){
