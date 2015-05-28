@@ -115,7 +115,7 @@ public class DumbAI implements AI{
 			for(int col = 0; col < Game.COL; col++){	
 				Game copy = currentBoard.clone();
 				reFill(copy,bestMove);
-				copy.printGame();
+//				copy.printGame();
 				if(!copy.checkValidMove(col))
 					continue;
 
@@ -170,22 +170,8 @@ public class DumbAI implements AI{
 			if(scores[col] == max && currentBoard.checkValidMove(col))
 				moves.add(col);
 
-		
-/*
-		moves.add(bestMove.getHead(bestMove).col());
-		printMoveDetail(bestMove);
-		System.out.println();
-		while(pq.peek().getHue() >= bestMove.getHue()){
-			move goodMoves = pq.poll();
-			printMoveDetail(goodMoves);
-			System.out.println();
-			moves.add(goodMoves.getHead(goodMoves).col());
-		}
-
-*/
 		pq = null;
 		return moves.get(generator.nextInt(moves.size()));
-//		return bestMove.getHead(bestMove).col();
 	}
 
 	public int checkInstantWinOrLose(Game currentBoard){

@@ -29,9 +29,9 @@ public class Game implements Runnable {
 
 	// returns the available row to input. e.g. if the 1st row has no checker
 	// return this row
-	public int top(int x) {
+	public int top(int col) {
 		int i = 0;
-		while (i < ROW && board.whatsHere(i, x) != NOP)
+		while (i < ROW && board.whatsHere(i, col) != NOP)
 			i++;
 		return i;
 	}
@@ -58,27 +58,27 @@ public class Game implements Runnable {
 		isHintReady = false;
 	}
 
-	public int makeMove(int x) {
+	public int makeMove(int col) {
 		// x out of bound or the column is full thus no move is made or there's
 		// already another player
-		int y = top(x);
-		board.addChecker(y, x, player);
-		if (win(y, x, player))
+		int row = top(col);
+		board.addChecker(row, col, player);
+		if (win(row, col, player))
 			state = GAMESET;
 		if (board.isBoardFull())
 			state = BOARDFULL;
 
-		updateLastMove(y, x);
+		updateLastMove(row, col);
 		player = switchPlayer();
-		return y;
+		return row;
 	}
 
 	// check if the move is legal, so the column is not out of bound, the column
 	// is not full
 	// and the top element is not occupied
-	public boolean checkValidMove(int x) {
-		if (x < 0 || x >= COL || board.whatsHere(ROW - 1, x) != NOP
-				|| board.whatsHere(top(x), x) != NOP)
+	public boolean checkValidMove(int col) {
+		if (col < 0 || col >= COL || board.whatsHere(ROW - 1, col) != NOP
+				|| board.whatsHere(top(col), col) != NOP)
 			return false;
 		return true;
 	}
@@ -93,18 +93,18 @@ public class Game implements Runnable {
 
 	// undo redo function
 	// add a move to the linked list
-	private void updateLastMove(int x, int y) {
-		node newmove = new node(x, y, null, null);
+	private void updateLastMove(int row, int col) {
+		node newmove = new node(row, col, null, null);
 		newmove.setGameState(state);
 		lastmove.attach(newmove);
 		lastmove = newmove;
 	}
 
 	// check if a checker inserted in row x, col y by player would win the game
-	public boolean win(int x, int y, int player) {
-		return board.rowCheck(x, y, player) || board.colCheck(x, y, player)
-				|| board.LdiagCheck(x, y, player)
-				|| board.RdiagCheck(x, y, player);
+	public boolean win(int row, int col, int player) {
+		return board.rowCheck(row, col, player) || board.colCheck(row, col, player)
+				|| board.LdiagCheck(row, col, player)
+				|| board.RdiagCheck(row, col, player);
 	}
 
 	// undo redo function
@@ -144,8 +144,8 @@ public class Game implements Runnable {
 	}
 
 	// returns the checker at row x, col y, 0 for nothing, 1 for p1 and 2 for p2
-	public int whatsHere(int x, int y) {
-		return board.whatsHere(x, y);
+	public int whatsHere(int row, int col) {
+		return board.whatsHere(row, col);
 	}
 
 	// returns how many checkers of "player" are connected, "direction" is the
@@ -158,32 +158,24 @@ public class Game implements Runnable {
 		return board.howManyConnect(row, col, player, direction);
 	}
 
-	public int howManyConnectOneSide(int row, int col, int player,
-			int direction, int side) {
-		if (row >= ROW || col >= COL)
-			return 0;
-
-		return board.howManyConnectOneSide(row, col, player, direction, side);
-	}
-
 	// get UI column axis in pixel without margin to the side of the window
-	public static int getX(int x) {
-		return x * Connect4Board.CRADUIS * 2 + x * Connect4Board.SIDE_MARGIN
+	public static int getX(int col) {
+		return col * Connect4Board.CRADUIS * 2 + col * Connect4Board.SIDE_MARGIN
 				* 2 + Connect4Board.INITIAL_SIDE_MARGIN;
 	}
 
 	// get UI row axis in pixel without margin to the top of the window
-	public static int getY(int y) {
-		return y * Connect4Board.CRADUIS * 2 + y * Connect4Board.TOP_MARGIN * 2
+	public static int getY(int row) {
+		return row * Connect4Board.CRADUIS * 2 + row * Connect4Board.TOP_MARGIN * 2
 				+ Connect4Board.TOP_MARGIN;
 	}
 
 	// gets the virtual/backend board col index
 	// if the click was not in a circle return -1;
-	public static int getCol(int width, double x) {
+	public static int getCol(int width, double xcol) {
 		for (int i = 0; i < COL; i++) {
 			int col = getX(i) + width;
-			if (x >= col && x <= col + Connect4Board.CRADUIS * 2)
+			if (xcol >= col && xcol <= col + Connect4Board.CRADUIS * 2)
 				// return
 				// (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
 				return i;
