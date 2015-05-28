@@ -142,7 +142,15 @@ public class Connect4Board{
 
 		return count;
 	}
-
+	/**
+	 * check the number of checkers
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 */
 	public int connectCol(int row,int col,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -167,7 +175,16 @@ public class Connect4Board{
 
 		return count;
 	}
-
+	
+	/**
+	 * check the number of checkers
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 */
 	public int connectLDiag(int row,int col,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -192,7 +209,16 @@ public class Connect4Board{
 
 		return count;
 	}
-
+	
+	/**
+	 * check the number of checkers
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 */
 	public int connectRDiag(int row,int col,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -245,7 +271,18 @@ public class Connect4Board{
 
 		return false;
 	}
-
+	
+	/**
+	 * check the number of checkers
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2. direction = 0,1,2,3
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player
+	 * @param direction the direction
+	 * @return the number connected on direction
+	 */
 	public int howManyConnect(int row,int col, int player, int direction){
 		int connected = 0;
 		switch(direction){
