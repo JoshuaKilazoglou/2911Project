@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+/**
+ * The panel used to store the content of the connect4 board
+ * 		implments MouseListener,ActionListener,MouseMotionListener
+ */
 class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
 	Game game;
 	AI AI = null; // change basicAI to something your trying to test
@@ -35,7 +38,13 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
 
-
+	/**
+	 * Constructor to build the panel for the connect4 panel
+	 * PostCondition: BUidling the panel for the connect4 board
+	 * @param mode:The mode chosen to play.0 means pvp;1 means easy;2 measns normal;3 means hard
+	 * @param dialog:The dialog that would pop up when game is fnished to remind user to make action.
+	 * 				 This dialog should be initialized in the Frame of the board
+	 */
 	public Board(Dialog dialog,int mode){
 		game = new Game();
 		this.dialog = dialog;
@@ -50,11 +59,22 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		displayHint = false;
 	}
 
+	/**
+	 * Initialize wait label,which would be displayed while AI is generating steps
+	 * Postcondition:The label for displaying the label is generated
+	 * @param wait:The label displaying the text
+	 */
 	public void setWaitLabel(JLabel wait){
 		this.wait = wait;
 		wait.setVisible(false);
 	}
 
+	
+	/**
+	 * The method for restart the game in the logic backend and setting up some parameters to its begining state
+	 * Preconditon:Game has started
+	 * Postcondition: The game is reset
+	 */
 	public void restartGame(){
 		if(isAIMove)
 			return;
@@ -72,6 +92,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		repaint();
 	}
 	
+	/**
+	 * The method for displaying the hint
+	 * Precondition:null
+	 * Postcondtion:null
+	 */
 	public void displayHint(){
 		if(isAIMove)
 			return;
@@ -346,12 +371,24 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	}
 }
 
+/**
+ * The class for storing the frame of the menu
+ * 		extends JFrame
+ * @author Alan
+ *
+ */
 public class BoardFrame extends JFrame{
 	private JPanel toolbar;
 	private JButton startButton,undoButton,redoButton,exitButton,backToMenu,hintButton,b1,b2,b3;//the lass3 button is for dialog
 	private Board board;
 	private JLabel wait; 
 	
+	/**
+	 * Constructor for the frame of the game board
+	 * Precondtion:null
+	 * postCondtion:Creat an instance of the BoardFrame for users to operate
+	 * @param mode
+	 */
 	public BoardFrame(int mode){
 		super("BoardFrame");
 		JDialog dialog = buildDialog();
@@ -366,6 +403,12 @@ public class BoardFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+
+	/**
+	 * PreCondtion:null
+	 * PostCondition:Creating the dialog to pop out when the game is finished
+	 * @return JDialog
+	 */
 	private JDialog buildDialog() {
 		JDialog dialog = new JDialog(this);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -377,6 +420,11 @@ public class BoardFrame extends JFrame{
 		return dialog;
 	}
 
+	/**
+	 * A method creating toolbar with functional buttons
+	 * PreCondtion:null
+	 * PostCondition:Creating a JPanel as the game board with Buttons needed for the game board interface and add it to the frame
+	 */
 	public void addToolBar(){
 		toolbar = new JPanel();
 		startButton = new JButton("Restart");
@@ -408,7 +456,12 @@ public class BoardFrame extends JFrame{
 		add(toolbar,BorderLayout.SOUTH);
 
 	}
-
+	
+	/**
+	 * A general private Listener class that deals with the Buttons in the game board Panel.(See addtoolBar method)
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class listener implements ActionListener{
 	@Override
 		public void actionPerformed(ActionEvent e){
@@ -440,6 +493,12 @@ public class BoardFrame extends JFrame{
 		}
 	}
 	
+	/**
+	 * Adding Buttons to the game finished dialog
+	 * Precondtion:Passed in the game finished dialog into the method
+	 * Postcondition:The dialog has all the buttons it need in it
+	 * @param dialog the target dialog for the buttons to be put in
+	 */
 	private void addButtontoDialog(Dialog dialog){
 		b1 = new JButton("ReStart");
 		b2 = new JButton("Back to menu");
@@ -460,6 +519,11 @@ public class BoardFrame extends JFrame{
 		dialog.add(jpanel);
 	}
 	
+	/**
+	 * A general private Listener class that deals with the Buttons in the game finished dialog.
+	 * @author Alan
+	 *		implements ActionListener
+	 */
 	private class ActionListenerForDialog implements ActionListener{
 
 		@Override
