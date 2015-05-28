@@ -38,17 +38,44 @@ public class temp {
 			int p1Move = p1.decideMove(g);
 			if(g.checkValidMove(p1Move))
 				g.makeMove(p1Move);
-
+			else{
+				p1Move = p2.decideMove(g);
+				if(g.checkValidMove(p1Move))
+					g.makeMove(p1Move);
+				else{
+					for(int i = 0 ; i < Game.COL ; i++){
+						if(g.checkValidMove(i)){
+							p1Move = i;
+							g.makeMove(i);
+						}
+					}
+				}
+			}
 			g.printGame();
-			System.out.println("Checker by p1 at " + p1Move);
+			System.out.println("Checker by AdvanceAI at " + p1Move);
+
+			if(g.getState()!=Game.NAD)
+				break;
 
 			scanner.nextLine();
 			int p2Move = p2.decideMove(g);
 			if(g.checkValidMove(p2Move))
 				g.makeMove(p2Move);
-
+			else{
+				p2Move = p1.decideMove(g);
+				if(g.checkValidMove(p2Move))
+					g.makeMove(p2Move);
+				else{
+					for(int i = 0 ; i < Game.COL ; i++){
+						if(g.checkValidMove(i)){
+							p2Move = i;		
+							g.makeMove(i);
+						}
+					}
+				}
+			}
 			g.printGame();
-			System.out.println("Checker by p2 at " + p2Move);
+			System.out.println("Checker by DumbAI at " + p2Move);
 			
 			scanner.nextLine();
 		}
