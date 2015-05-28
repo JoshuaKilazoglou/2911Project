@@ -6,6 +6,14 @@ public class AdvanceAI implements AI{
 	}
 
 
+	/**
+	 * decided move 
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param g game
+	 * @return move
+	 */
 	public int decideMove(Game g) {
 		result = new int[7];
 		//evaluateMoves(g);
@@ -32,6 +40,17 @@ public class AdvanceAI implements AI{
 	}
 	
 
+	/**
+	 * Evaluate row 
+	 * @param g game
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param x row no
+	 * @param y column no
+	 * @param player player
+	 * @return return evaluation of row
+	 */
 	private int rowEval(Game g,int x, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -85,7 +104,7 @@ public class AdvanceAI implements AI{
 					}else if (countR == 4){
 						sideA = false;
 					}else if(g.whatsHere(x,y+i) == player){
-						countR+=10;
+						countR+=30;
 					}else{
 						sideA = false;
 					}
@@ -96,7 +115,7 @@ public class AdvanceAI implements AI{
 					}else if (countL == 4){
 						sideB = false;
 					}else if(g.whatsHere(x,y-i) == player){
-						countL+=10;
+						countL+=30;
 					}else{
 						sideB = false;
 					}
@@ -106,6 +125,18 @@ public class AdvanceAI implements AI{
 		count += countL + countR;
 		return count;
 	}
+	
+	/**
+	 * Evaluate column
+	 * @param g game
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param x row no
+	 * @param y column no
+	 * @param player player
+	 * @return return evaluation of column
+	 */
 	private int colEval(Game g,int x, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -180,6 +211,18 @@ public class AdvanceAI implements AI{
 		count += countU + countD;
 		return count;
 	}
+	
+	/**
+	 * Evaluate left diagonal 
+	 * @param g game
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param x row no
+	 * @param y column no
+	 * @param player player
+	 * @return return evaluation of left diagonal
+	 */
 	private int LdiagEval(Game g,int x, int y, int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -254,6 +297,18 @@ public class AdvanceAI implements AI{
 		}
 		return count;
 	}
+	
+	/**
+	 * Evaluate right diagonal 
+	 * @param g game
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param x row no
+	 * @param y column no
+	 * @param player player
+	 * @return return evaluation of right diagonal
+	 */
 	private int RdiagEval(Game g,int x, int y,int player) {
 		boolean sideA = true,sideB = true;
 		int count = 1;
@@ -326,6 +381,15 @@ public class AdvanceAI implements AI{
 		return count;
 	}
 
+	/**
+	 * return board evaluation
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param g game
+	 * @param player player
+	 * @return evaluation
+	 */
 	private int boardEval(Game g, int player){
 		int re =0;
 		for (int i = 0; i < 7; i++){
@@ -337,7 +401,17 @@ public class AdvanceAI implements AI{
 		return re;
 	}
 
-
+	/**
+	 * return point evaluation
+	 * precondition:NULL
+	 * postcondition: return x | 0<x<row ||　0< top(x) <col
+	 * invariant:Null
+	 * @param g game
+	 * @param i row no
+	 * @param j column no
+	 * @param player player
+	 * @return evaluation
+	 */
 	private int pointEval(Game g,int i, int j, int player) {
 		int opponent = g.switchPlayer();
 		return  -rowEval(g,i,j,player) - colEval(g,i,j,player) 
