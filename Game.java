@@ -276,9 +276,9 @@ public class Game{
 	 * @param col col no.
 	 * @return column no
 	 */
-	public static int getCol(int width, double col){
+	public static int getCol(int width, double xcol){
 		for(int i = 0; i < COL; i++){
-			int xcol = getX(i)+width;
+			int col = getX(i)+width;
 			if(xcol >= col && xcol <= col+Connect4Board.CRADUIS*2)
 //				return (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
 				return i;
