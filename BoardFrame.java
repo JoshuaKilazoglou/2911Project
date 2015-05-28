@@ -122,6 +122,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    		hint.start();
 	}
 
+	/**
+	 * undo the move
+	 */
 	public void undo(){
 		if(waitingHint)
 			return;
@@ -144,7 +147,10 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		} else if(game.undo())
 			repaint();
 	}
-
+	
+	/**
+	 * redo the move
+	 */
 	public void redo(){
 		if(waitingHint)
 			return;
@@ -169,23 +175,37 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			repaint();
 	}
 
+	/**
+	 * display the hint
+	 * @param i true for yes, false for no
+	 */
 	public void setDisplayHint(boolean i){
 		this.displayHint = i;
 	}
 
+	/**
+	 * get the distance betweent the image and the let border
+	 * @return the distance
+	 */
 	public int getDisImgToBorder(){
 		int imgWidth = img.getWidth(this);
 		int WinWidth = getWidth();
 		return (WinWidth-imgWidth)/2;
 	}
-
+	/**
+	 * get the distance between the image and the top border
+	 * @return the distance
+	 */
 	public int getDisImgToTop(){
 		int imgHeight = img.getHeight(this);
 		int WinHeight = getHeight();
 		return (WinHeight-imgHeight)/2+Connect4Board.CRADUIS;
 	}
 	/**
-	 * invariant
+	 * draw the game
+	 * invariant the game
+	 * precondition: g != null
+	 * postcondition: the graphic is changed
 	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -239,6 +259,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		}
 	}
 
+	/**
+	 * prepare the animation
+	 * precondition: null
+	 * postcondition: create new timer, set the fallingCol and Row, set a terminate row and set falling to true
+	 */
 	public void prepareAnimation(){
 		t = new Timer(DURATION,this);
 		fallingCol = Game.getX(this.col)+getDisImgToBorder();
@@ -247,6 +272,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		isFalling = true;
 	}
 
+	/**
+	 * check the state and pop message
+	 * precondition: null
+	 * postcondition: a message pop up or nothing happens
+	 */
 	public void checkState(){
 		if (game.getState() == Game.GAMESET){
    			dialog.setTitle("Player " + game.switchPlayer() + " Win");
@@ -258,7 +288,12 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			dialog.setVisible(true);
 		}
 	}
-
+	
+	/**
+	 * performe the animation
+	 * precondition: e != null
+	 * postcondtion: the falling animation variables are set to the default state
+	 */
 	public void actionPerformed(ActionEvent e){
 		fallingRow += fallSpeed;
 		repaint();
@@ -299,6 +334,10 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
     	//
     }
 
+	/**
+	 * deals with clicking on the board
+	 * precondition: e!=null
+	 */
    	public void mouseClicked(MouseEvent e) { 
    		if(waitingHint){
    			interuptHint = true;
@@ -357,7 +396,10 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/**
+	 * draw the ball on top when the mouse is moved
+	 */
 	public void mouseMoved(MouseEvent e) {
 		int cursorPos = e.getX();
 		if(cursorPos < getDisImgToBorder()+Connect4Board.INITIAL_SIDE_MARGIN+Connect4Board.CRADUIS)

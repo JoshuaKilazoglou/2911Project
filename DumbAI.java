@@ -254,6 +254,12 @@ public class DumbAI implements AI{
 		return -1;
 	}
 
+		/**
+		 * evaluate the game state 
+		 * @param g the game
+		 * @param col the column to simlulate
+		 * @return the evaluation score
+		 */
 	public int eval(Game g, int col){
 		int row = g.top(col),score = 0,maxConnect = 0, maxDir = 0;
 		int player = g.getCurrentPlayer(), opponent = g.switchPlayer();
@@ -281,14 +287,5 @@ public class DumbAI implements AI{
 		}
 
 		return score;
-	}
-
-	public void printMoveDetail(move m){
-		if(m == null)
-			return;
-		else
-			printMoveDetail(m.prev());
-
-		System.out.print("(Player: " + m.getPlayer() + " Col: " + m.col() + ", Hue: " + m.getHue() + ", Depth: " + m.getDepth() + ") -> ");
 	}
 }
