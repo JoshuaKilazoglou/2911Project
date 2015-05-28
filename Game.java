@@ -1,100 +1,83 @@
-public class Game implements Runnable {
-	public static final int P1 = 1, P2 = 2, NOP = 0;
-	public static final int ROW = 6, COL = 7;
-	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal
-															// deteced
+public class Game{
+	public static final int P1 = 1, P2 = 2, NOP = 0;  
+	public static final int ROW = 6,COL = 7;
+	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
 	public static int LEFT = 0, RIGHT = 1;
 
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Connect4Board board;
 	private node lastmove; // undo redo element
 	private int state; // 0 for normal state, 2 for someone won
-	private node hint;
-	private boolean isHintReady;
-
-	public boolean isHintReady() {
-		return isHintReady;
-	}
-
-	public void setHintReady(boolean isHintReady) {
-		this.isHintReady = isHintReady;
-	}
-
-	Game() {
+	
+	Game(){
 		player = P1;
 		state = NAD;
-		board = new Connect4Board(ROW, COL);
+		board = new Connect4Board(ROW,COL);
 		lastmove = new node(); // undo redo element
 	}
 
-	// returns the available row to input. e.g. if the 1st row has no checker
-	// return this row
-	public int top(int col) {
+	// returns the available row to input. e.g. if the 1st row has no checker return this row
+	public int top(int col){
 		int i = 0;
-		while (i < ROW && board.whatsHere(i, col) != NOP)
+		while(i < ROW && board.whatsHere(i,col) != NOP)
 			i++;
 		return i;
 	}
 
 	// switch the player
-	public int switchPlayer() {
+	public int switchPlayer(){
 		return ((player == P1) ? P2 : P1);
 	}
 
-	// check if someone won the game, if someone won, the state is 2, if the
-	// board is full the state is 1
+	// check if someone won the game, if someone won, the state is 2, if the board is full the state is 1
 	// else the state is 0
-	public int getState() {
+	public int getState(){
 		return state;
 	}
 
 	// restarts the game by setting everything to start state
-	public void restartGame() {
+	public void restartGame(){
 		board.clearBoard();
 		state = NAD;
-		lastmove = new node(); // we might want to clear the record for the
-								// actual undo, redo
+		lastmove = new node(); // we might want to clear the record for the actual undo, redo
 		player = P1;
-		isHintReady = false;
 	}
 
-	public int makeMove(int col) {
-		// x out of bound or the column is full thus no move is made or there's
-		// already another player
-		int row = top(col);
-		board.addChecker(row, col, player);
-		if (win(row, col, player))
-			state = GAMESET;
-		if (board.isBoardFull())
-			state = BOARDFULL;
+	public int makeMove(int col){
+			//x out of bound or the column is full thus no move is made or there's already another player
+			int row = top(col);
+			board.addChecker(row,col,player);
+			if(win(row,col,player))
+				state = GAMESET;
+			if(board.isBoardFull())
+				state = BOARDFULL;
 
-		updateLastMove(row, col);
-		player = switchPlayer();
-		return row;
+			updateLastMove(row,col);
+			player = switchPlayer();
+			return row;
 	}
 
-	// check if the move is legal, so the column is not out of bound, the column
-	// is not full
+	// check if the move is legal, so the column is not out of bound, the column is not full
 	// and the top element is not occupied
-	public boolean checkValidMove(int col) {
-		if (col < 0 || col >= COL || board.whatsHere(ROW - 1, col) != NOP
-				|| board.whatsHere(top(col), col) != NOP)
+	public boolean checkValidMove(int col){
+		if(col < 0 || col >= COL || board.whatsHere(ROW-1,col) != NOP 
+			|| board.whatsHere(top(col),col) != NOP)
 			return false;
 		return true;
 	}
 
-	public void printGame() {
+	public void printGame(){
 		board.printBoard();
 	}
 
-	public int getCurrentPlayer() {
+	public int getCurrentPlayer(){
 		return player;
 	}
 
 	// undo redo function
 	// add a move to the linked list
-	private void updateLastMove(int row, int col) {
-		node newmove = new node(row, col, null, null);
+	private void updateLastMove(int row,int col){
+		node newmove = new node(row,col,null,null);
 		newmove.setGameState(state);
 		lastmove.attach(newmove);
 		lastmove = newmove;
@@ -102,136 +85,108 @@ public class Game implements Runnable {
 
 	// check if a checker inserted in row x, col y by player would win the game
 	public boolean win(int row, int col, int player) {
-		return board.rowCheck(row, col, player) || board.colCheck(row, col, player)
-				|| board.LdiagCheck(row, col, player)
-				|| board.RdiagCheck(row, col, player);
+		return board.rowCheck(row,col,player) || board.colCheck(row,col,player) || board.LdiagCheck(row,col,player) || board.RdiagCheck(row,col,player);
 	}
 
 	// undo redo function
-	// undo the move, the player is also changed, the checker on the board is
-	// deleted
-	// if undo success return true, if not(the player nevered player a move, the
-	// player have undoed all his move)
-	public boolean undo() {
-		if (lastmove.row() == -1)
+	// undo the move, the player is also changed, the checker on the board is deleted
+	// if undo success return true, if not(the player nevered player a move, the player have undoed all his move)
+	public boolean undo(){
+		if(lastmove.row() == -1)
 			return false;
 
-		board.deleteChecker(lastmove.row(), lastmove.col());
+		board.deleteChecker(lastmove.row(),lastmove.col());
 		player = switchPlayer();
 		lastmove = lastmove.prev();
 		state = lastmove.getState();
-		isHintReady = false;
 		return true;
 	}
 
 	// undo redo function
 	// redo the move, the player is changed, the checker is added to the board
 	// return true for success and false for not
-	public boolean redo() {
-		if (lastmove == null || lastmove.next() == null)
+	public boolean redo(){
+		if(lastmove == null || lastmove.next() == null)
 			return false;
 
 		lastmove = lastmove.next();
-		board.addChecker(lastmove.row(), lastmove.col(), player);
+		board.addChecker(lastmove.row(),lastmove.col(),player);
 		state = lastmove.getState();
 		player = switchPlayer();
-		isHintReady = false;
 		return true;
 	}
 
-	public Connect4Board getBoard() {
+	public Connect4Board getBoard(){
 		return board;
 	}
 
 	// returns the checker at row x, col y, 0 for nothing, 1 for p1 and 2 for p2
-	public int whatsHere(int row, int col) {
-		return board.whatsHere(row, col);
+	public int whatsHere(int row,int col){
+		return board.whatsHere(row,col);
 	}
 
-	// returns how many checkers of "player" are connected, "direction" is the
-	// direction you want to check
+	// returns how many checkers of "player" are connected, "direction" is the direction you want to check
 	// 0 for row, 1 for col, 2 for left diagnal, 3 for right diagnal
-	public int howManyConnect(int row, int col, int player, int direction) {
-		if (row >= ROW || col >= COL)
+	public int howManyConnect(int row,int col, int player, int direction){
+		if(row >= ROW || col >= COL)
 			return 0;
 
-		return board.howManyConnect(row, col, player, direction);
+		return board.howManyConnect(row,col,player,direction);
 	}
-
+	
 	// get UI column axis in pixel without margin to the side of the window
-	public static int getX(int col) {
-		return col * Connect4Board.CRADUIS * 2 + col * Connect4Board.SIDE_MARGIN
-				* 2 + Connect4Board.INITIAL_SIDE_MARGIN;
+	public static int getX(int col){
+		return col*Connect4Board.CRADUIS*2 + col*Connect4Board.SIDE_MARGIN*2 + Connect4Board.INITIAL_SIDE_MARGIN;
 	}
 
 	// get UI row axis in pixel without margin to the top of the window
-	public static int getY(int row) {
-		return row * Connect4Board.CRADUIS * 2 + row * Connect4Board.TOP_MARGIN * 2
-				+ Connect4Board.TOP_MARGIN;
+	public static int getY(int row){
+		return row*Connect4Board.CRADUIS*2 + row*Connect4Board.TOP_MARGIN*2 + Connect4Board.TOP_MARGIN;
 	}
 
 	// gets the virtual/backend board col index
 	// if the click was not in a circle return -1;
-	public static int getCol(int width, double xcol) {
-		for (int i = 0; i < COL; i++) {
-			int col = getX(i) + width;
-			if (xcol >= col && xcol <= col + Connect4Board.CRADUIS * 2)
-				// return
-				// (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
+	public static int getCol(int width, double col){
+		for(int i = 0; i < COL; i++){
+			int xcol = getX(i)+width;
+			if(xcol >= col && xcol <= col+Connect4Board.CRADUIS*2)
+//				return (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
 				return i;
 		}
 		return -1;
 	}
-
-	public node getLastMove() {
-		if (lastmove.row() == -1)
+	
+	public node getLastMove(){
+		if(lastmove.row() == -1)
 			return null;
 		return lastmove;
 	}
-
-	public void setPlayer(int player) {
+	
+	public void setPlayer(int player){
 		this.player = player;
 	}
-
-	public void setState(int state) {
+	
+	public void setState(int state){
 		this.state = state;
 	}
-
-	public Game clone() {
+	
+	public Game clone(){
 		Game g = new Game();
 		Connect4Board bd = g.getBoard();
-		for (int i = 0; i < ROW; i++)
-			for (int j = 0; j < COL; j++)
+		for(int i = 0; i < ROW; i++)
+			for(int j = 0; j < COL; j++)
 				bd.addChecker(i, j, this.whatsHere(i, j));
 		g.setPlayer(this.player);
 		g.setState(this.state);
 		return g;
 	}
-
+	
 	@Override
-	public boolean equals(Object o) {
-		for (int i = 0; i < ROW; i++)
-			for (int j = 0; j < COL; j++)
-				if (this.board.whatsHere(i, j) != ((Game) o).whatsHere(i, j))
+	public boolean equals(Object o){		
+		for(int i = 0; i < ROW; i++)
+			for(int j = 0; j < COL; j++)
+				if(this.board.whatsHere(i, j) != ((Game) o).whatsHere(i,j))
 					return false;
 		return true;
-	}
-
-	public synchronized void generateHint() {
-		AI ai = new DumbAI();
-		int x = ai.decideMove(this);
-		node n = new node(top(x), x, null, null);
-		this.hint = n;
-		isHintReady = true;
-	}
-
-	public node getHint() {
-		return this.hint;
-	}
-
-	@Override
-	public void run() {
-		isHintReady = false;
-		generateHint();
 	}
 }
