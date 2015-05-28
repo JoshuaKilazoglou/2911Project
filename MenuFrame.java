@@ -146,7 +146,7 @@ public class MenuFrame extends JFrame {
 	/**
 	 * A general private Listener class that deals with the Buttons in the EntrancePanel
 	 * @author Alan
-	 *		implements ActionListener
+	 * implements ActionListener
 	 */
 	private class ListenerForEntrance implements ActionListener {
 
@@ -171,7 +171,7 @@ public class MenuFrame extends JFrame {
 	/**
 	 * A general private Listener class that deals with the Buttons in the ModePanel
 	 * @author Alan
-	 *		implements ActionListener
+	 * implements ActionListener
 	 */
 	private class ListenerForMode implements ActionListener {
 
@@ -202,7 +202,7 @@ public class MenuFrame extends JFrame {
 	/**
 	 * A general private Listener class that deals with the Buttons in the AIPanel
 	 * @author Alan
-	 *		implements ActionListener
+	 * implements ActionListener
 	 */
 	private class ListenerForAI implements ActionListener {
 
