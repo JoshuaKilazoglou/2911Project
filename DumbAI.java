@@ -275,7 +275,7 @@ public class DumbAI implements AI{
 			case 1: score = 0; 		break; //no other chips
 			case 2: score = (player == AI ? 50 : -50);		break; //2 in a row
 			case 3: score = (player == AI ? 100 : -100); 	break;  //3 in a row
-			case 4: score = (player == AI ? WINNING_SCORE : -WINNING_SCORE);  break; //4 in a row i.e. win
+			case 4: score = (player == AI ? WINNING_SCORE : -2*WINNING_SCORE);  break; //4 in a row i.e. win
 			case 5: score = (player == AI ? 2*WINNING_SCORE : -2*WINNING_SCORE);  break; //4 in a row i.e. win
 		}
 
@@ -287,8 +287,8 @@ public class DumbAI implements AI{
 			case 1: score += 0; 		break; //no other chips
 			case 2: score += (player == AI ? 100 : -100);		break; //2 in a row
 			case 3: score += (player == AI ? 250 : -250); 	break;  //3 in a row
-			case 4: score += (player == AI ? 2*WINNING_SCORE : -2*WINNING_SCORE);  break; //4 in a row i.e. win
-			case 5: score = (player == AI ? 2*WINNING_SCORE : -4*WINNING_SCORE);  break; //4 in a row i.e. win
+			case 4: score += (player == AI ? WINNING_SCORE : -3*WINNING_SCORE);  break; //4 in a row i.e. win
+			case 5: score = (player == AI ? 4*WINNING_SCORE : -4*WINNING_SCORE);  break; //4 in a row i.e. win
 		}
 
 		return score;
