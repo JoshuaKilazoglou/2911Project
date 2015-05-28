@@ -17,24 +17,65 @@ public class Connect4Board{
 		board = new int[row][col]; // Java automatically fills the matrix with 0
 	}
 
+	/**
+	 * precondition: NULL
+	 * postcondition: all
+	 * invariant:board
+	 * return the board in a matrix(array of array of int)
+	 * @return board
+	 */
 	public int[][] getBoard() {
 		return board;
 	}
 	
+	/**
+	 * add checker to the board
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 */
 	public void addChecker(int row, int col, int player){
 		if(row >= X || col >= Y || row < 0 || col < 0)
 			return;
 		board[row][col] = player;
 	}
 
+	/**
+	 * return what is on the selected location(x,y) of the board
+	 * (ie: player1's checker, player2's checker or nothing
+	 * precondition: 0<=row < g.row, 0<=col < g.column
+	 * postcondition: all
+	 * invariant: NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @return what is on the selected location of the board
+	 */
 	public int whatsHere(int row, int col){
 		return board[row][col];
 	}
 
+	/**
+	 * remove the checker from the board of the selected loaction(x,y)
+	 * precondition: 0<=row < g.row, 0<=col < g.column
+	 * postcondition: board[x][y] = 0
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 */
 	public void deleteChecker(int row, int col){
 		addChecker(row,col,0);
 	}
 
+
+	/**
+	 * print the board
+	 * precondition:NULL
+	 * postcondition:NULL
+	 * invariant:board
+	 */
 	public void printBoard() {
 		System.out.println("board");
 		for(int i = X-1; i >= 0 ; i--){
@@ -44,10 +85,22 @@ public class Connect4Board{
 		}
 	}
 
+	/**
+	 * clear all the checker on the board
+	 * precondition:null
+	 * postcondition:board[x][y] =0 | 0<=x<row, 0<=y<column
+	 */
 	public void clearBoard(){
 		board = new int[this.X][this.Y];
 	}
 
+	/**
+	 * return true if the board is full, false otherwise
+	 * precondition:NULL
+	 * postcondition:NULL
+	 * invariant:board
+	 * @return true if the board is full, false otherwise
+	 */
 	public boolean isBoardFull(){
 		for(int[] row : this.board)
 			for(int i : row)
