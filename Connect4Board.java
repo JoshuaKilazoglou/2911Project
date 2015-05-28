@@ -110,13 +110,14 @@ public class Connect4Board{
 	}
 
 	/**
-	 * check the number of checkers
+	 * check the number of checkers for the row
 	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
 	 * @param col the column no.
 	 * @param player the player who add the checker
+	 * @return the number of connected checker on the row
 	 */
 	public int connectRow(int row,int col,int player){
 		boolean sideA = true,sideB = true;
@@ -143,13 +144,14 @@ public class Connect4Board{
 		return count;
 	}
 	/**
-	 * check the number of checkers
+	 * check the number of checkers for the column
 	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
 	 * @param col the column no.
 	 * @param player the player who add the checker
+	 * @return the number of connected checker on the col
 	 */
 	public int connectCol(int row,int col,int player){
 		boolean sideA = true,sideB = true;
@@ -177,13 +179,14 @@ public class Connect4Board{
 	}
 	
 	/**
-	 * check the number of checkers
+	 * check the number of checkers for left diagnal
 	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
 	 * @param col the column no.
 	 * @param player the player who add the checker
+	 * @return the number of connected checker on the l diagnal
 	 */
 	public int connectLDiag(int row,int col,int player){
 		boolean sideA = true,sideB = true;
@@ -211,13 +214,14 @@ public class Connect4Board{
 	}
 	
 	/**
-	 * check the number of checkers
+	 * check the number of checkers for right diagnal
 	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
 	 * @param col the column no.
 	 * @param player the player who add the checker
+	 * @return the number of connected checker on the r diagnal
 	 */
 	public int connectRDiag(int row,int col,int player){
 		boolean sideA = true,sideB = true;
@@ -244,12 +248,33 @@ public class Connect4Board{
 		return count;
 	}
 
+	/**
+	 * Check if the number of checkers on the row results winning condition
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 * @return true for we can win, and false for we cant
+	 */
 	public boolean rowCheck(int row,int col, int player){
 		if(connectRow(row,col,player) >= 4)
 			return true;
 
 		return false;
 	}
+
+	/**
+	 * Check if the number of checkers on the col results winning condition
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 * @return true for we can win, and false for we cant
+	 */
 	public boolean colCheck(int row,int col, int player){
 		if(connectCol(row,col,player) >= 4)
 			return true;
@@ -257,7 +282,16 @@ public class Connect4Board{
 		return false;
 	}
 
-	// these are a bit mind fuck since we start from the bottom
+	/**
+	 * Check if the number of checkers on the left diagnal results winning condition
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 * @return true for we can win, and false for we cant
+	 */
 	public boolean LdiagCheck(int row,int col, int player){
 		if(connectLDiag(row,col,player) >= 4)
 			return true;
@@ -265,6 +299,16 @@ public class Connect4Board{
 		return false;
 	}
 
+	/**
+	 * Check if the number of checkers on the right diagnal results winning condition
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 * @return true for we can win, and false for we cant
+	 */
 	public boolean RdiagCheck(int row,int col, int player){
 		if(connectRDiag(row,col,player) >= 4)
 			return true;
@@ -273,7 +317,7 @@ public class Connect4Board{
 	}
 	
 	/**
-	 * check the number of checkers
+	 * check the number of checkers connected in all directions
 	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2. direction = 0,1,2,3
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL

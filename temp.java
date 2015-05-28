@@ -28,7 +28,33 @@ public class temp {
 		g.printGame();			
 	}
 
-	public static void main(String[] args){
+	public static void AIvsAI(){
+
+		AI p1 = new AdvanceAI();
+		AI p2 = new DumbAI();
+		Game g = new Game();
+		Scanner scanner = new Scanner(System.in);
+		while(g.getState() == Game.NAD){
+			int p1Move = p1.decideMove(g);
+			if(g.checkValidMove(p1Move))
+				g.makeMove(p1Move);
+
+			g.printGame();
+			System.out.println("Checker by p1 at " + p1Move);
+
+			scanner.nextLine();
+			int p2Move = p2.decideMove(g);
+			if(g.checkValidMove(p2Move))
+				g.makeMove(p2Move);
+
+			g.printGame();
+			System.out.println("Checker by p2 at " + p2Move);
+			
+			scanner.nextLine();
+		}
+	}
+
+	public static void whiteBoxTesting(){
 		System.out.println("Enter the column that you want to insert the checker\n" +
 						   "Starting from the left is 0 and ends at 7.\n" +
 						   "After insertion You will be given the state of the game and the new layout\n" + 
@@ -49,6 +75,9 @@ public class temp {
 			
 			g.printGame();
 			x = Integer.parseInt(input.next());
-		} 		
+		} 	
+	}
+	public static void main(String[] args){
+		AIvsAI();
 	}
 }

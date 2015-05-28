@@ -49,8 +49,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		game = new Game();
 		this.dialog = dialog;
 		this.AIMode = mode;
-		if(mode != 0)
-			this.AI = new DumbAI(); // for testing, change the AI object for which ever your using
+		this.AI = new DumbAI(); // for testing, change the AI object for which ever your using
 		
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
@@ -94,14 +93,16 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	/**
 	 * The method for displaying the hint
-	 * Precondition:null
-	 * Postcondtion:null
+	 * Precondition: null
+	 * Postcondtion: hint flag turned on
 	 */
 	public void displayHint(){
 		if(isAIMove)
 			return;
 		if(waitingHint)
 			return;
+
+		wait.setText("Generating Hint...");
 
    		hint = new Thread(new Runnable() {
    			public void run(){
@@ -114,7 +115,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 				}
 				displayHint = true;
 				repaint();
-				wait.setVisible(false);
+				if(!isAIMove)
+					wait.setVisible(false);
 				waitingHint = false;			
 			}
    		});
@@ -124,6 +126,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 
 	/**
 	 * undo the move
+	 * postcondition: the display hint flag is turned off, chekers are deleted in the game
 	 */
 	public void undo(){
 		if(waitingHint)
@@ -150,6 +153,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	/**
 	 * redo the move
+	 * postcondition: the display hint flag is turned off, chekers are added in the game
 	 */
 	public void redo(){
 		if(waitingHint)
@@ -292,7 +296,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	/**
 	 * performe the animation
 	 * precondition: e != null
-	 * postcondtion: the falling animation variables are set to the default state
+	 * postcondtion: the falling animation variables are set to the default state and the AI is called if pvAI
 	 */
 	public void actionPerformed(ActionEvent e){
 		fallingRow += fallSpeed;
@@ -314,11 +318,16 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    				new Thread(new Runnable() {
    					public void run(){
 						isAIMove = true;
+						wait.setText("AI is thinking...");
 						wait.setVisible(true);
 						col = AI.decideMove(game);
-						wait.setVisible(false);
+						try{
+							Thread.sleep(100);
+						}catch(Exception e){}
+						wait.setVisible(false);	
 						prepareAnimation();
-						t.start();					
+						t.start();	
+			
 					}
    				}).start();
 			}
@@ -346,13 +355,13 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    				public void run(){
    					wait.setText("Hint interupted!");
    					try{
-   						Thread.sleep(500);
+   						Thread.sleep(100);
    					}catch(Exception e){
 
    					}
    					if(!isAIMove)
    						wait.setVisible(false);
-   					wait.setText("AI is thinking...");
+
    				}
    			}).start();
    		}
@@ -399,6 +408,8 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	
 	/**
 	 * draw the ball on top when the mouse is moved
+	 * precondition: e != null
+	 * postcondition: the cursorCol is set to the position of the cursor
 	 */
 	public void mouseMoved(MouseEvent e) {
 		int cursorPos = e.getX();
