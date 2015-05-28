@@ -159,7 +159,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		int WinHeight = getHeight();
 		return (WinHeight-imgHeight)/2+Connect4Board.CRADUIS;
 	}
-
+	/**
+	 * invariant
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		int x = getDisImgToBorder(); // to keep the picture in the middle

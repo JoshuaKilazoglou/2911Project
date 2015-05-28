@@ -109,6 +109,15 @@ public class Connect4Board{
 		return true;
 	}
 
+	/**
+	 * check the number of checkers
+	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * postcondition: board[x][y] = player
+	 * invariant:NULL
+	 * @param row the row no.
+	 * @param col the column no.
+	 * @param player the player who add the checker
+	 */
 	public int connectRow(int row,int col,int player){
 		boolean sideA = true,sideB = true;
 		int count = 1;

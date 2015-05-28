@@ -44,38 +44,4 @@ public class node implements Cloneable{
 	public int getState(){
 		return this.gameState;
 	}
-	public void printNexts(){
-		for(node temp = this; temp != null; temp = temp.next)
-			System.out.println("x: " + temp.x + ", y: " + temp.y);
-	}
-
-	/*public int steps(node prev){
-		if(prev == null)
-			return 1;
-		else
-			return steps(prev.prev)+1;
-	}
-	
-	public getFirstNode(){
-		if(prev == null)
-			return 1;
-		else
-			return steps(prev.prev)+1;
-		
-	}*/
-	
-	public node clone(){
-		node newNode = null;
-		try {
-			newNode = (node) super.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (newNode != null){
-			newNode.attach(newNode.next().clone());
-		}
-		return newNode;
-		
-	}
 }

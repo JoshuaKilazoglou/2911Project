@@ -26,34 +26,69 @@ class move extends node{
 		this.depth = depth;
 	}
 	
+	/**
+	 * sets the player who did the move
+	 * precondition: player = 1,2
+	 * @param player the player who did the move
+	 */
 	public void setPlayer(int player){
 		this.player = player;
 	}
 
+	/**
+	 * sets the depth of the move
+	 * precondition: d = 0..MAX_DEPTH
+	 * @param d the depth of the move
+	 */
 	public void setDepth(int d){
 		this.depth = d;
 	}
 
+	/**
+	 * Sets the score value of the move
+	 * @param h the score value
+	 */
 	public void setHeu(int h){
 		heu = h;
 	}
 
+	/**
+	 * get the depth
+	 * @return the depth
+	 */
 	public int getDepth(){
 		return depth;
 	}
 
+	/**
+	 * get the previous move
+	 * @return the previous move node
+	 */
 	public move prev(){
 		return this.prev;
 	}
 
+	/**
+	 * get the hueristic
+	 * @return the heuristic
+	 */
 	public int getHue(){
 		return heu;
 	}
 
+	/**
+	 * get the player
+	 * @return the player who did the move
+	 */
 	public int getPlayer(){
 		return this.player;
 	}
 
+	/**
+	 * get the head of the move
+	 * @param prev
+	 * @return the starting move
+	 */
 	public move getHead(move prev){
 		if(prev.prev() == null)
 			return prev;
@@ -74,6 +109,9 @@ public class DumbAI implements AI{
 
 	private class comparator implements Comparator<move>{
 		@Override
+		/**
+		 * an implementation of the compare function
+		 */
 		public int compare(move a,move b){
 			if(a.getDepth() != b.getDepth())
 				return a.getDepth() - b.getDepth();
@@ -82,6 +120,13 @@ public class DumbAI implements AI{
 		}
 	}
 
+	/**
+	 * refills the game with the moves inside the node
+	 * precondition: game ! = NULL
+	 * postcondition: game is fulled
+	 * @param g the game object
+	 * @param lastMove the last move
+	 */
 	public void reFill(Game g, node lastMove){
 		if(lastMove == null)
 			return;
@@ -91,7 +136,17 @@ public class DumbAI implements AI{
 		g.makeMove(lastMove.col());
 		lastMove = lastMove.prev();
 	}
-
+	
+	/**
+	 * Use dijsktra to search for all the possible moves and return the best move
+	 * it updates and aggregate the score
+	 * precondition: currentBoard != null,0 < maxDepth <= MAX_DEPTH
+	 * postcondition: the score is aggregated
+	 * invariant: the game board 
+	 * @param currentBoard the game
+	 * @param maxDepth the max depth to search
+	 * @return
+	 */
 	public move getBestMove(Game currentBoard,int maxDepth){
 		int initialDepth = 0;
 		Game g = currentBoard.clone();
@@ -130,7 +185,13 @@ public class DumbAI implements AI{
 
 		return pq.poll();
 	}
-
+	/**
+	 * An implementation of decide Move for the AI
+	 * precondition: currentBoard != NULL
+	 * postcondition: a move is given
+	 * invariant: currentBoard
+	 * @param currentBoard the game 
+	 */
 	@Override
 	public int decideMove(Game currentBoard){
 		try {
@@ -173,7 +234,15 @@ public class DumbAI implements AI{
 		pq = null;
 		return moves.get(generator.nextInt(moves.size()));
 	}
-
+	
+	/**
+	 * check if we can win or lose in one move
+	 * precondition: currrentBoard != NULL
+	 * postcondition: null
+	 * invariant: currentBoard
+	 * @param currentBoard the game
+	 * @return the row if we can win or lose, or -1 is we can't
+	 */
 	public int checkInstantWinOrLose(Game currentBoard){
 		for(int col = 0; col < Game.COL; col++){
 			if(!currentBoard.checkValidMove(col))
