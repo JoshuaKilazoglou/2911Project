@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 
 public class MinMaxAI implements AI{
-	public static final int START_DEPTH = 5;
+    public static final int START_DEPTH = 5;
 	public static final int MIN_COL = 0, MAX_COL = 6;
 	public static final int DEFAULT_MOVE = 0, DEFAULT_SCORE = 0;
 	public static final int HUMAN = 1, AI = 2;
@@ -22,6 +22,7 @@ public class MinMaxAI implements AI{
 		//this loop is a special case of the loop within MinMax
 		for(int i = MIN_COL; i < MAX_COL; i++) {
 			Game child = generateChild(currentBoard);
+            child.makeMove(move); 
 			score = minMax(child, depth, i, AI);
 			if (score > maxScore) maxScore = score; move = i;
 		}
@@ -36,7 +37,7 @@ public class MinMaxAI implements AI{
 		//Then move is scored
 		int score = score(currentBoard, move, player);
 		//return if max depth reached OR winning score reached
-		currentBoard.makeMove(move); 
+		//currentBoard.makeMove(move); 
 		
 		if (depth == 0 || (score >= WINNING_SCORE) ) {
 			return score;
@@ -48,19 +49,23 @@ public class MinMaxAI implements AI{
 			bestScore = LOSING_SCORE;
 			for (int newMove = MIN_COL; newMove < MAX_COL; newMove++) {//for each possible move
 				Game child = generateChild(currentBoard);//maybe should be clone
+                child.makeMove(move); //test
 				//MinMax with next player
-				score = minMax(child, depth, newMove, HUMAN);
+				score += minMax(child, depth, newMove, HUMAN);
 				//BestScore is maximising score for AI
-				bestScore = Math.max(score, bestScore);
+				//bestScore = Math.max(score, bestScore);
+                bestScore = score;
 			}	
 		} else {
 			bestScore = WINNING_SCORE;
 			for (int newMove = MIN_COL; newMove < MAX_COL; newMove++) {//for each possible move
 				Game child = generateChild(currentBoard);//maybe should be clone
+                child.makeMove(move); //test
 				//MinMax with next player
-				score = -minMax(child, depth, newMove, AI); //MinMax with opposite player
+				score -= minMax(child, depth, newMove, AI); //MinMax with opposite player
 				//BestScore is minimising score for Human
-				bestScore = Math.min(score, bestScore);
+				//bestScore = Math.min(score, bestScore);
+                bestScore = score;
 			}	
 		
 		}
