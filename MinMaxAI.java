@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 
-public class MinMaxAI {
+public class MinMaxAI implements AI{
 	public static final int START_DEPTH = 5;
 	public static final int MIN_COL = 0, MAX_COL = 6;
 	public static final int DEFAULT_MOVE = 0, DEFAULT_SCORE = 0;
@@ -33,10 +33,11 @@ public class MinMaxAI {
 		//If move is invalid, return losing score
 		if(!currentBoard.checkValidMove(move)) return LOSING_SCORE;
 		//Otherwise move is actually made
-		currentBoard.makeMove(move); 
 		//Then move is scored
 		int score = score(currentBoard, move, player);
 		//return if max depth reached OR winning score reached
+		currentBoard.makeMove(move); 
+		
 		if (depth == 0 || (score >= WINNING_SCORE) ) {
 			return score;
 		}
@@ -98,7 +99,7 @@ public class MinMaxAI {
 	 */
 	//NOTE: due to changes this is possibly a redundant function
 	private Game generateChild(Game currentBoard) {
-		Game child = new Game(); //needs some sort of clone
+		Game child = currentBoard.clone(); //needs some sort of clone
 		return child;
 	}
 }
