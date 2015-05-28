@@ -1,8 +1,9 @@
 public class Game{
 	public static final int P1 = 1, P2 = 2, NOP = 0;  
 	public static final int ROW = 6,COL = 7;
-	public static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
-	public static int LEFT = 0, RIGHT = 1;
+	public final static int GAMESET = 2, BOARDFULL = 1, NAD = 0; // nothing abnormal deteced
+	public final static int LEFT = 0, RIGHT = 1;
+	public final static int BADMOVE = -1;
 
 	private int player; // 1 for player 1 and 2 for player 2.
 	private Connect4Board board;
@@ -172,7 +173,7 @@ public class Game{
 	 * @return return true if undo success
 	 */
 	public boolean undo(){
-		if(lastmove.row() == -1)
+		if(lastmove.row() == BADMOVE)
 			return false;
 
 		board.deleteChecker(lastmove.row(),lastmove.col());
@@ -283,7 +284,7 @@ public class Game{
 //				return (int)Math.floor((x-Connect4Board.INITIAL_SIDE_MARGIN)/(Connect4Board.CRADUIS*2+Connect4Board.SIDE_MARGIN*2));
 				return i;
 		}
-		return -1;
+		return BADMOVE;
 	}
 	
 	/**
@@ -294,7 +295,7 @@ public class Game{
 	 * @return last move
 	 */
 	public node getLastMove(){
-		if(lastmove.row() == -1)
+		if(lastmove.row() == BADMOVE)
 			return null;
 		return lastmove;
 	}

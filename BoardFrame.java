@@ -6,15 +6,14 @@ import java.awt.event.*;
  * 		implments MouseListener,ActionListener,MouseMotionListener
  */
 class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
-	Game game;
-	AI AI = null; // change basicAI to something your trying to test
-	Image img;
-	Dialog dialog;
-	JLabel wait;
-	Thread hint;
+	private Game game;
+	private AI AI = null; // change basicAI to something your trying to test
+	private Image img;
+	private Dialog dialog;
+	private JLabel wait;
 
 	private final static int DURATION = 5;
-	Timer t = null;
+	private Timer t = null;
 
 	private boolean playerWon = false;
 	private boolean aIWon = false;
@@ -26,14 +25,14 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	private int fallingRow = 0,fallSpeed = 10,terminate = 0;
 	private int fallingCol = 0,col=0;
 	
-	private int cursorCol = -1;
+	private int cursorCol = Game.BADMOVE;
 	private boolean isAIMove = false;
 	private int AIMode = 0;
 	
 	private boolean displayHint = false;
 	private boolean waitingHint = false;
 	private boolean interuptHint = false;
-	private int hintCol = -1;
+	private int hintCol = Game.BADMOVE;
 	
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
@@ -223,7 +222,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 			g2d.fillOval(fallingCol,fallingRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);
 		}
 
-		if(cursorCol != -1){
+		if(cursorCol != Game.BADMOVE){
 			int cursorRow = y-Connect4Board.CRADUIS*2;
 			g2d.setColor((game.getCurrentPlayer()==Game.P1)?Color.RED:Color.YELLOW);
 			g2d.fillOval(cursorCol-Connect4Board.CRADUIS,cursorRow,Connect4Board.CRADUIS*2,Connect4Board.CRADUIS*2);	
@@ -380,7 +379,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    		double location = e.getPoint().getX();
    		col = Game.getCol(getDisImgToBorder(),location);
    		
-   		if(col == -1)
+   		if(col == Game.BADMOVE)
    			return;
    		
    		if(!game.checkValidMove(col))

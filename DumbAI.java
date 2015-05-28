@@ -210,7 +210,7 @@ public class DumbAI implements AI{
 		int depth = MAX_DEPTH;
 
 		int col = checkInstantWinOrLose(currentBoard);
-		if(col != -1)
+		if(col != Game.BADMOVE)
 			return col;
 
 		while((bestMove = getBestMove(currentBoard,depth--)) == null);
@@ -254,7 +254,7 @@ public class DumbAI implements AI{
 			if(currentBoard.win(row,col,AI) || currentBoard.win(row,col,HUMAN))
 				return col;
 		}
-		return -1;
+		return Game.BADMOVE;
 	}
 
 	/**

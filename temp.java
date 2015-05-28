@@ -30,8 +30,8 @@ public class temp {
 
 	public static void AIvsAI(){
 
-		AI p1 = new AdvanceAI();
-		AI p2 = new DumbAI();
+		AI p2 = new AdvanceAI();
+		AI p1 = new DumbAI();
 		Game g = new Game();
 		Scanner scanner = new Scanner(System.in);
 		while(g.getState() == Game.NAD){
@@ -52,7 +52,7 @@ public class temp {
 				}
 			}
 			g.printGame();
-			System.out.println("Checker by AdvanceAI at " + p1Move);
+			System.out.println("Checker by DumbAI at " + p1Move);
 
 			if(g.getState()!=Game.NAD)
 				break;
@@ -75,7 +75,7 @@ public class temp {
 				}
 			}
 			g.printGame();
-			System.out.println("Checker by DumbAI at " + p2Move);
+			System.out.println("Checker by AdvanceAI at " + p2Move);
 			
 			scanner.nextLine();
 		}
