@@ -8,6 +8,7 @@ import java.awt.event.*;
 class Board extends JPanel implements MouseListener,ActionListener,MouseMotionListener{
 	private Game game;
 	private AI AI = null; // change basicAI to something your trying to test
+	private AI hintAI = null;
 	private Image img;
 	private Dialog dialog;
 	private JLabel wait;
@@ -37,6 +38,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 	final static int ROW = Game.ROW;
 	final static int COL = Game.COL;
 
+
 	/**
 	 * Constructor to build the panel for the connect4 panel
 	 * PostCondition: BUidling the panel for the connect4 board
@@ -48,8 +50,15 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 		game = new Game();
 		this.dialog = dialog;
 		this.AIMode = mode;
-		this.AI = new MinMaxAI(); // for testing, change the AI object for which ever your using
+		hintAI = new AdvanceAI();
 		
+		if(mode == 1)
+			this.AI = new DumbAI(); // for testing, change the AI object for which ever your using	
+		else if(mode == 2)
+			this.AI = new basicAI();
+		else if(mode == 3)
+			this.AI = new AdvanceAI();
+
 		setBackground(Color.white);
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Connect4Board.png"));
 		addMouseListener(this);
@@ -103,11 +112,11 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 
 		wait.setText("Generating Hint...");
 
-   		hint = new Thread(new Runnable() {
+   		new Thread(new Runnable() {
    			public void run(){
    				waitingHint = true;
    				wait.setVisible(true);
-				hintCol = AI.decideMove(game);
+				hintCol = hintAI.decideMove(game);
 				if(interuptHint){
 					interuptHint = false;
 					return;	
@@ -118,9 +127,7 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
 					wait.setVisible(false);
 				waitingHint = false;			
 			}
-   		});
-
-   		hint.start();
+   		}).start();
 	}
 
 	/**
