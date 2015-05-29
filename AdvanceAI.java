@@ -9,7 +9,7 @@ public class AdvanceAI implements AI{
 	/**
 	 * decided move 
 	 * precondition:NULL
-	 * postcondition: return x | 0<x<row ||¡¡0< top(x) <col
+	 * postcondition: return maximum number of the steps
 	 * invariant:Null
 	 * @param g game
 	 * @return move

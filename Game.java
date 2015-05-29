@@ -21,8 +21,8 @@ public class Game{
 	/**
 	 * returns the available row to input. e.g. if the 1st row is the first row 
 	 * has no checker return this row
-	 * precondition: 0<col<7
-	 * postcondition:0<i<6
+	 * precondition: 0less thancolless than7
+	 * postcondition:0less thaniless than6
 	 * invariant: NULL
 	 * @param col column no.
 	 * @return top value
@@ -61,7 +61,7 @@ public class Game{
 	/**
 	 * restart game
 	 * precondition: NULL
-	 * postcondition: board[x][y] =0,player = P1,lastmove[z] =0,state = NAD | 0 <= x < 7 , 0<=y<7 ,0<=z
+	 * postcondition: board[x][y] =0,player = P1,lastmove[z] =0,state = NAD | 0  less equals to  x less than 7 , 0 less equals to yless than7 ,0 less equals to z
 	 * invariant: NULL
 	 */
 	public void restartGame(){
@@ -73,10 +73,11 @@ public class Game{
 
 	/**
 	 * add checker to the board
-	 * precondition:0<=col < g.column, player == 1,2
+	 * precondition:0 less equals to col less than g.column, player == 1,2
 	 * postcondition: board[top(column)][column] = current player
 	 * invariant:NULL
 	 * @param col the column no.
+	 * @return the row where that chesspiece drops tp
 	 */
 	public int makeMove(int col){
 			//x out of bound or the column is full thus no move is made or there's already another player
@@ -97,7 +98,7 @@ public class Game{
 	/**
 	 * check if the move is legal, so the column is not out of bound, the column is not full
 	 * and the top element is not occupied
-	 * precondition:0<=col < g.column, player == 1,2
+	 * precondition:0 less equals to col less than g.column, player == 1,2
 	 * postcondition: null
 	 * invariant:NULL
 	 * @param col column no.
@@ -134,7 +135,7 @@ public class Game{
 	// undo redo function
 	/** 
 	 * add a move to the linked list
-	 * precondition:0<=col < g.column, player == 1,2
+	 * precondition:0 less equals to col less than g.column, player == 1,2
 	 * postcondition: node add to the lastmove
 	 * invariant:NULL
 	 * @param row row no.
@@ -150,7 +151,7 @@ public class Game{
 	// check if a checker inserted in row x, col y by player would win the game
 	/**
 	 * check if a checker inserted in row x, col y by player would win the game
-	 * precondition:0<=col < g.column, player == 1,2
+	 * precondition:0 less equals to col less than g.column, player == 1,2
 	 * postcondition: all
 	 * invariant:NULL
 	 * @param row row no
@@ -209,7 +210,7 @@ public class Game{
 
 	/**
 	 * returns the checker at row x, col y, 0 for nothing, 1 for p1 and 2 for p2
-	 * precondition: 0<=row < g.row, 0<=col < g.column
+	 * precondition: 0 less equals to row less than g.row, 0 less equals to col less than g.column
 	 * postcondition: NULL
 	 * invariant: NULL
 	 * @param row row no.
@@ -224,7 +225,7 @@ public class Game{
 	/**
 	 * returns how many checkers of "player" are connected, "direction" is the direction you want to check
 	 * 0 for row, 1 for col, 2 for left diagnal, 3 for right diagnal
-	 * precondition: 0<=row < g.row, 0<=col < g.column,direction = 1,2,3,4
+	 * precondition: 0 less equals to row less than g.row, 0 less equals to col less than g.column,direction = 1,2,3,4
 	 * postcondition: NULL
 	 * invariant: NULL
 	 * @param row row no.
@@ -242,7 +243,7 @@ public class Game{
 	
 	/**
 	 * get UI column axis in pixel without margin to the side of the window
-	 * precondition: 0<=col < g.col
+	 * precondition: 0 less equals to col less than g.col
 	 * postcondition: NULL
 	 * invariant:NULL
 	 * @param col column no.
@@ -255,7 +256,7 @@ public class Game{
 	// get UI row axis in pixel without margin to the top of the window
 	/**
 	 * get UI row axis in pixel without margin to the side of the window
-	 * precondition: 0<=col < g.rcol
+	 * precondition: 0 less equals to col less than g.rcol
 	 * postcondition: NULL
 	 * invariant:NULL
 	 * @param row row no.
@@ -270,11 +271,11 @@ public class Game{
 	/**
 	 * gets the virtual/backend board col index
 	 * if the click was not in a circle return -1;
-	 * precondition: 0<=col < g.rcol
+	 * precondition: 0 less equals to col less than g.rcol
 	 * postcondition: NULL
 	 * invariant: width,col
 	 * @param width width no.
-	 * @param col col no.
+	 * @param xcol col no.
 	 * @return column no
 	 */
 	public static int getCol(int width, double xcol){
@@ -305,6 +306,7 @@ public class Game{
 	 * precondition: player = 1,2
 	 * postcondition:g.player = player
 	 * invariant: NULL
+	 * @param player: the Id for player
 	 */
 	public void setPlayer(int player){
 		this.player = player;
@@ -315,6 +317,7 @@ public class Game{
 	 * precondition: state = 0,1,2
 	 * postcondition:g.state = state
 	 * invariant: NULL
+	 * @param state: The Id indicating the state of the game
 	 */
 	public void setState(int state){
 		this.state = state;

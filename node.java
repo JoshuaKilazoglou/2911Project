@@ -37,18 +37,21 @@ public class node implements Cloneable{
 	
 	/**
 	 * get the row of this move
+	 * @return int
 	 */
 	public int row(){ 
 		return this.x;
 	}
 	/**
 	 * get the col of this move
+	 * @return int
 	 */
 	public int col(){
 		return this.y;
 	}
 	/**
 	 * get the previous move
+	 * @return int
 	 */
 	public node prev(){ 
 		return this.prev;
@@ -56,6 +59,7 @@ public class node implements Cloneable{
 	
 	/**
 	 * get the next move
+	 * @return int
 	 */
 	public node next(){
 		return this.next;
@@ -63,6 +67,7 @@ public class node implements Cloneable{
 	
 	/**
 	 * get the game state
+	 * @return int
 	 */
 	public int getState(){
 		return this.gameState;

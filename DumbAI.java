@@ -86,7 +86,7 @@ class move extends node{
 
 	/**
 	 * get the head of the move
-	 * @param prev
+	 * @param prev:The previous move
 	 * @return the starting move
 	 */
 	public move getHead(move prev){
@@ -140,7 +140,7 @@ public class DumbAI implements AI{
 	/**
 	 * Use dijsktra to search for all the possible moves and return the best move
 	 * it updates and aggregate the score
-	 * precondition: currentBoard != null,0 < maxDepth <= MAX_DEPTH
+	 * precondition: currentBoard != null,0 less than maxDepth less equals to MAX_DEPTH
 	 * postcondition: the score is aggregated
 	 * invariant: the game board 
 	 * @param currentBoard the game

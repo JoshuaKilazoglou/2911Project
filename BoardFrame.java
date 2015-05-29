@@ -449,7 +449,7 @@ public class BoardFrame extends JFrame{
 	 * Constructor for the frame of the game board
 	 * Precondtion:null
 	 * postCondtion:Creat an instance of the BoardFrame for users to operate
-	 * @param mode
+	 * @param mode:The mode chosen to play.0 means pvp;1 means easy;2 measns normal;3 means hard
 	 */
 	public BoardFrame(int mode){
 		super("BoardFrame");

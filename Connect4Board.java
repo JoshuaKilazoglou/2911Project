@@ -30,7 +30,7 @@ public class Connect4Board{
 	
 	/**
 	 * add checker to the board
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: "0  less euquals to  row less than g.row, 0  less euquals to  col less than g.column, player == 1,2"
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -46,7 +46,7 @@ public class Connect4Board{
 	/**
 	 * return what is on the selected location(x,y) of the board
 	 * (ie: player1's checker, player2's checker or nothing
-	 * precondition: 0<=row < g.row, 0<=col < g.column
+	 * precondition: 0  less euquals to  row less than g.row, 0  less euquals to  col less than g.column
 	 * postcondition: all
 	 * invariant: NULL
 	 * @param row the row no.
@@ -59,7 +59,7 @@ public class Connect4Board{
 
 	/**
 	 * remove the checker from the board of the selected loaction(x,y)
-	 * precondition: 0<=row < g.row, 0<=col < g.column
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column
 	 * postcondition: board[x][y] = 0
 	 * invariant:NULL
 	 * @param row the row no.
@@ -88,7 +88,7 @@ public class Connect4Board{
 	/**
 	 * clear all the checker on the board
 	 * precondition:null
-	 * postcondition:board[x][y] =0 | 0<=x<row, 0<=y<column
+	 * postcondition:board[x][y] =0 | 0 less euquals to xless thanrow, 0 less euquals to yless thancolumn
 	 */
 	public void clearBoard(){
 		board = new int[this.X][this.Y];
@@ -111,7 +111,7 @@ public class Connect4Board{
 
 	/**
 	 * check the number of checkers for the row
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -145,7 +145,7 @@ public class Connect4Board{
 	}
 	/**
 	 * check the number of checkers for the column
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -180,7 +180,7 @@ public class Connect4Board{
 	
 	/**
 	 * check the number of checkers for left diagnal
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -215,7 +215,7 @@ public class Connect4Board{
 	
 	/**
 	 * check the number of checkers for right diagnal
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -250,7 +250,7 @@ public class Connect4Board{
 
 	/**
 	 * Check if the number of checkers on the row results winning condition
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -267,7 +267,7 @@ public class Connect4Board{
 
 	/**
 	 * Check if the number of checkers on the col results winning condition
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -284,7 +284,7 @@ public class Connect4Board{
 
 	/**
 	 * Check if the number of checkers on the left diagnal results winning condition
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -301,7 +301,7 @@ public class Connect4Board{
 
 	/**
 	 * Check if the number of checkers on the right diagnal results winning condition
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
@@ -318,7 +318,7 @@ public class Connect4Board{
 	
 	/**
 	 * check the number of checkers connected in all directions
-	 * precondition: 0<=row < g.row, 0<=col < g.column, player == 1,2. direction = 0,1,2,3
+	 * precondition: 0 less euquals to row less than g.row, 0 less euquals to col less than g.column, player == 1,2. direction = 0,1,2,3
 	 * postcondition: board[x][y] = player
 	 * invariant:NULL
 	 * @param row the row no.
