@@ -30,9 +30,13 @@ public class AdvanceAI implements AI{
 			result[i] = boardEval(temp,temp.getCurrentPlayer());
 		}
 		//eval(g, 1);
-		int max = 0;
-		for( int i = 0; i < 7;i++){
-			if( result[i] > result[max]){
+		int firstValid = 0,max;
+		for(;firstValid < Game.COL; firstValid++)
+			if(g.checkValidMove(firstValid))
+				max = firstValid;
+
+		for( int i = firstValid; i < Game.COL;i++){
+			if( g.checkValidMove(i) && result[i] > result[max]){
 				max = i;
 			}
 		}
@@ -62,7 +66,7 @@ public class AdvanceAI implements AI{
 
 			if(sideA){
 
-				if(y+i >= g.COL){
+				if(y+i >= Game.COL){
 					sideA = false;
 				}else if (countR == 4){
 					sideA = false;
@@ -99,7 +103,7 @@ public class AdvanceAI implements AI{
 
 				if(sideA){
 
-					if(y+i >= g.COL){
+					if(y+i >= Game.COL){
 						sideA = false;
 					}else if (countR == 4){
 						sideA = false;
@@ -148,7 +152,7 @@ public class AdvanceAI implements AI{
 
 			if(sideA){
 
-				if(x+i >= g.ROW){
+				if(x+i >= Game.ROW){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
@@ -185,7 +189,7 @@ public class AdvanceAI implements AI{
 
 				if(sideA){
 
-					if(x+i >= g.ROW){
+					if(x+i >= Game.ROW){
 						sideA = false;
 					}else if (countU == 4){
 						sideA = false;
@@ -234,7 +238,7 @@ public class AdvanceAI implements AI{
 
 			if(sideA){
 
-				if(x+i >= g.ROW || y-i < 0){
+				if(x+i >= Game.ROW || y-i < 0){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
@@ -245,7 +249,7 @@ public class AdvanceAI implements AI{
 				}
 			}
 			if(sideB){
-				if(x-i < 0 || y+i >= g.COL){
+				if(x-i < 0 || y+i >= Game.COL){
 					sideB = false;
 				}else if (countD == 4){
 					sideB = false;
@@ -272,7 +276,7 @@ public class AdvanceAI implements AI{
 
 				if(sideA){
 
-					if(x+i >= g.ROW || y-i < 0){
+					if(x+i >= Game.ROW || y-i < 0){
 						sideA = false;
 					}else if (countU == 4){
 						sideA = false;
@@ -283,7 +287,7 @@ public class AdvanceAI implements AI{
 					}
 				}
 				if(sideB){
-					if(x-i < 0 || y+i >= g.COL){
+					if(x-i < 0 || y+i >= Game.COL){
 						sideB = false;
 					}else if (countD == 4){
 						sideB = false;
@@ -320,7 +324,7 @@ public class AdvanceAI implements AI{
 
 			if(sideA){
 
-				if(x+i >= g.ROW || y+i >= g.COL){
+				if(x+i >= Game.ROW || y+i >= Game.COL){
 					sideA = false;
 				}else if (countU == 4){
 					sideA = false;
@@ -355,7 +359,7 @@ public class AdvanceAI implements AI{
 
 				if(sideA){
 
-					if(x+i >= g.ROW || y+i >= g.COL){
+					if(x+i >= Game.ROW || y+i >= Game.COL){
 						sideA = false;
 					}else if (countU == 4){
 						sideA = false;
