@@ -30,10 +30,12 @@ public class AdvanceAI implements AI{
 			result[i] = boardEval(temp,temp.getCurrentPlayer());
 		}
 		//eval(g, 1);
-		int firstValid = 0,max;
+		int firstValid = 0,max = 0;
 		for(;firstValid < Game.COL; firstValid++)
-			if(g.checkValidMove(firstValid))
+			if(g.checkValidMove(firstValid)){
 				max = firstValid;
+				break;
+			}
 
 		for( int i = firstValid; i < Game.COL;i++){
 			if( g.checkValidMove(i) && result[i] > result[max]){

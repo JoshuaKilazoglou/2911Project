@@ -117,6 +117,9 @@ class Board extends JPanel implements MouseListener,ActionListener,MouseMotionLi
    				waitingHint = true;
    				wait.setVisible(true);
 				hintCol = hintAI.decideMove(game);
+				try{
+					Thread.sleep(100);
+				}catch(Exception e){}
 				if(interuptHint){
 					interuptHint = false;
 					return;	
